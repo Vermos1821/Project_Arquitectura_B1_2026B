@@ -1,0 +1,88 @@
+
+@startuml
+title Diagrama UML - Implementación de un Conversor de Bases, Aritmética y Complemento a Dos
+
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+
+    class Main {
+        +main(args: String[]): void
+        +mainMenu(scanner: Scanner): void
+        +decimalToOtherBases(scanner: Scanner): void
+        +otherBasesToDecimal(scanner: Scanner): void
+    }
+
+    interface BaseConverter {
+        +convertFromDecimal(numberDecimal: int): String
+        +convertToDecimal(numberInBase: String): int
+    }
+
+    class Binary {
+        +convertFromDecimal(numberDecimal: int): String
+        +convertToDecimal(numberInBase: String): int
+    }
+
+    class Octal {
+        +convertFromDecimal(numberDecimal: int): String
+        +convertToDecimal(numberInBase: String): int
+    }
+
+    class Hexadecimal {
+        +convertFromDecimal(numberDecimal: int): String
+        +convertToDecimal(numberInBase: String): int
+    }
+
+    class Decimal
+
+    class ArithmeticMenu {
+        +showMenu(scanner: Scanner): void
+    }
+
+    class TwosComplementEncoder {
+        +encode(number: int, bits: int): String
+    }
+
+    class TwosComplementDecoder {
+        +decode(binary: String): int
+    }
+
+    class BinaryAddition {
+        +add(number1: int, number2: int, bits: int): ArithmeticResult
+    }
+
+    class BinarySubtraction {
+        +subtract(number1: int, number2: int, bits: int): ArithmeticResult
+    }
+
+    class ArithmeticResult {
+        -binaryResult: String
+        -decimalResult: int
+        -overflow: boolean
+        +getBinaryResult(): String
+        +getDecimalResult(): int
+        +hasOverflow(): boolean
+    }
+
+    BaseConverter <|.. Binary
+    BaseConverter <|.. Octal
+    BaseConverter <|.. Hexadecimal
+
+    Main ..> BaseConverter
+    Main ..> ArithmeticMenu
+    Main ..> Binary
+    Main ..> Octal
+    Main ..> Hexadecimal
+
+    ArithmeticMenu ..> TwosComplementEncoder
+    ArithmeticMenu ..> TwosComplementDecoder
+    ArithmeticMenu ..> BinaryAddition
+    ArithmeticMenu ..> BinarySubtraction
+
+    BinaryAddition ..> TwosComplementEncoder
+    BinaryAddition ..> ArithmeticResult
+
+    BinarySubtraction ..> TwosComplementEncoder
+    BinarySubtraction ..> ArithmeticResult
+
+
+@enduml
