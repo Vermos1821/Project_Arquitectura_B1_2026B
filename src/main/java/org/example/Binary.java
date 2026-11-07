@@ -19,7 +19,7 @@ public class Binary implements BaseConverter {
 
             numberDecimal = numberDecimal / base;
         }
-        return "El número en Binario es: " + result;
+        return result;
     }
 
     @Override

@@ -42,7 +42,7 @@ public class Hexadecimal implements BaseConverter {
             numberDecimal = numberDecimal / base;
 
         }
-        return "El número en Hexadecimal es: " + result;
+        return result;
     }
 
     @Override

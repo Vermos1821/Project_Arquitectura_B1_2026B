@@ -4,6 +4,12 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
+    public static final String RESET = "\u001B[0m";
+    public static final String BOLD = "\u001B[1m";
+    public static final String CYAN = "\u001B[36m";
+    public static final String GREEN = "\u001B[32m";
+    public static final String YELLOW = "\u001B[33m";
+    public static final String RED = "\u001B[31m";
     static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         mainMenu(scanner);
@@ -13,13 +19,17 @@ public class Main {
         int option;
 
         do{
-            System.out.println("\nBienvenido al tuti");
-            System.out.println("1. Decimal a otras bases");
-            System.out.println("2. Otras bases a decimal");
-            System.out.println("3. Aritmética Binaria y Complemento a Dos");
-            System.out.println("4. Suma y Resta en binario ");
-            System.out.println("0. Exit");
-            System.out.print("Ingrese una opción: ");
+            System.out.println(CYAN + "\n=================================================" + RESET);
+            System.out.println(BOLD + YELLOW + "    ✨ BIENVENIDO AL TUTI - MENÚ PRINCIPAL ✨    " + RESET);
+            System.out.println(CYAN + "=================================================" + RESET);
+            System.out.println("  [" + GREEN + " 1 " + RESET + "] ➔ Decimal a otras bases");
+            System.out.println("  [" + GREEN + " 2 " + RESET + "] ➔ Otras bases a decimal");
+            System.out.println("  [" + GREEN + " 3 " + RESET + "] ➔ Aritmética Binaria y Complemento a Dos");
+            System.out.println("  [" + GREEN + " 4 " + RESET + "] ➔ Suma y Resta en binario ");
+            System.out.println(CYAN + "-------------------------------------------------" + RESET);
+            System.out.println("  [" + RED + " 0 " + RESET + "] ➔ Salir del sistema");
+            System.out.println(CYAN + "=================================================" + RESET);
+            System.out.print(YELLOW + " ➤ Ingrese una opción: " + RESET);
 
             option  = scanner.nextInt();
             switch(option) {
@@ -39,34 +49,39 @@ public class Main {
         boolean flag = false;
 
         while (!flag) {
-            System.out.println("\nIngrese el número decimal positivo a convertir: ");
+            System.out.print(YELLOW + "\n ➤ Ingrese el número decimal positivo a convertir: " + RESET);
 
             try{
                 numberDecimal = scanner.nextInt();
                 if (numberDecimal < 0){
-                    System.out.println("Entrada inválida, debe ser un número entero positivo ");
+                    System.out.println(RED + " ❌ Entrada inválida, debe ser un número entero positivo." + RESET);
                 } else {
                     flag = true;
                 }
             } catch (InputMismatchException inputMismatchException) {
-                System.out.println("Error: Ingresaste un carácter inválido. Debe ingresar un número entero positivo. ");
+                System.out.println(RED + " ❌ Error: Ingresaste un carácter inválido. Debe ingresar un número entero" +
+                                    " positivo." + RESET);
                 scanner.nextLine();
             }
         }
 
-        System.out.println("Bases a convertir ");
-        System.out.println("1. Binario");
-        System.out.println("2. Hexadecimal");
-        System.out.println("3. Octal");
-        System.out.println("0. Exit");
-        System.out.println("Ingrese una opción: ");
+        System.out.println(CYAN + "\n=================================================" + RESET);
+        System.out.println(BOLD + YELLOW + "       ✨ DECIMAL A OTRAS BASES ✨       " + RESET);
+        System.out.println(CYAN + "=================================================" + RESET);
+        System.out.println("  [" + GREEN + " 1 " + RESET + "] ➔ Binario");
+        System.out.println("  [" + GREEN + " 2 " + RESET + "] ➔ Hexadecimal");
+        System.out.println("  [" + GREEN + " 3 " + RESET + "] ➔ Octal");
+        System.out.println(CYAN + "-------------------------------------------------" + RESET);
+        System.out.println("  [" + RED + " 0 " + RESET + "] ➔ Cancelar y volver");
+        System.out.println(CYAN + "=================================================" + RESET);
+        System.out.print(YELLOW + " ➤ Seleccione la base destino: " + RESET);
 
         int option = 0;
 
         try{
             option = scanner.nextInt();
         } catch (InputMismatchException inputMismatchException) {
-            System.out.println("Error: opción inválida");
+            System.out.println(RED + " ❌ Error: opción inválida." + RESET);
             scanner.nextLine();
             return;
         }
@@ -84,33 +99,38 @@ public class Main {
                 baseConverter = new Octal();
                 break;
             case 0:
-                System.out.println("Saliendo del conversor...");
+                System.out.println(YELLOW + " ↩ Saliendo del conversor..." + RESET);
                 return;
             default:
-                System.out.println("Opción de base no válida.");
+                System.out.println(RED + " ❌ Opción de base no válida." + RESET);
                 return;
         }
 
-        System.out.println(baseConverter.convertFromDecimal(numberDecimal));
+        System.out.println(CYAN + "\n ➔ Resultado de la conversión: " + BOLD + GREEN +
+                            baseConverter.convertFromDecimal(numberDecimal) + RESET);
     }
 
     static void otherBasesToDecimal(Scanner scanner) {
         String numberInBase = "0";
         boolean flag = false;
 
-        System.out.println("\n¿De que base es el número que ingresará?");
-        System.out.println("1. Binario");
-        System.out.println("2. Hexadecimal");
-        System.out.println("3. Octal");
-        System.out.println("0. Exit");
-        System.out.println("Ingrese una opción: ");
+        System.out.println(CYAN + "\n=================================================" + RESET);
+        System.out.println(BOLD + YELLOW + "       ✨ OTRAS BASES A DECIMAL ✨       " + RESET);
+        System.out.println(CYAN + "=================================================" + RESET);
+        System.out.println("  [" + GREEN + " 1 " + RESET + "] ➔ Desde Binario");
+        System.out.println("  [" + GREEN + " 2 " + RESET + "] ➔ Desde Hexadecimal");
+        System.out.println("  [" + GREEN + " 3 " + RESET + "] ➔ Desde Octal");
+        System.out.println(CYAN + "-------------------------------------------------" + RESET);
+        System.out.println("  [" + RED + " 0 " + RESET + "] ➔ Cancelar y volver");
+        System.out.println(CYAN + "=================================================" + RESET);
+        System.out.print(YELLOW + " ➤ Seleccione la base de origen: " + RESET);
 
         int option = 0;
 
         try{
             option = scanner.nextInt();
         } catch (InputMismatchException inputMismatchException) {
-            System.out.println("Error: opción inválida");
+            System.out.println(RED + " ❌ Error: opción inválida." + RESET);
             scanner.nextLine();
             return;
         }
@@ -133,24 +153,26 @@ public class Main {
                 regex = "[0-7]+";
                 break;
             case 0:
-                System.out.println("Saliendo del conversor...");
+                System.out.println(YELLOW + " ↩ Saliendo del conversor..." + RESET);
                 return;
             default:
-                System.out.println("Opción de base no válida.");
+                System.out.println(RED + " ❌ Opción de base no válida." + RESET);
                 return;
         }
 
         while (!flag) {
-            System.out.println("Ingrese el número para convertir a decimal: ");
+            System.out.print(YELLOW + "\n ➤ Ingrese el número para convertir a decimal: " + RESET);
             numberInBase = scanner.next();
 
             if (numberInBase.matches(regex)) {
                 flag = true;
             } else {
-                System.out.println("Error: El número ingresado es inválido para la base que eligió. Vuelva a ingresar. ");
+                System.out.println(RED + " ❌ Error: El número ingresado es inválido para la base que eligió." +
+                                    " Vuelva a ingresar." + RESET);
             }
         }
 
-        System.out.println("El número representado a decimal: " + baseConverter.convertToDecimal(numberInBase));
+        System.out.println(CYAN + "\n ➔ El número representado en decimal es: " + BOLD + GREEN +
+                            baseConverter.convertToDecimal(numberInBase) + RESET);
     }
 }

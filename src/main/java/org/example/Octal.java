@@ -19,7 +19,7 @@ public class Octal implements BaseConverter {
 
             numberDecimal = numberDecimal / base;
         }
-        return "El número en Octal es: " + result;
+        return result;
     }
 
     @Override
