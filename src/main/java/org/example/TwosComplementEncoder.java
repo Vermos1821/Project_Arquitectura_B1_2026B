@@ -18,4 +18,25 @@ public class TwosComplementEncoder {
                 return false;
         }
     }
+    // Convierte un numero decimal positivo a binario
+    private String decimalToBinary(long number, int bits) {
+        String binary = "";
+
+        if (number == 0) {
+            binary = "0";
+        }
+
+        while (number > 0) {
+            int remainder = (int) (number % 2);
+            binary = remainder + binary;
+            number = number / 2;
+        }
+
+        while (binary.length() < bits) {
+            binary = "0" + binary;
+        }
+
+        return binary;
+    }
 }
+
