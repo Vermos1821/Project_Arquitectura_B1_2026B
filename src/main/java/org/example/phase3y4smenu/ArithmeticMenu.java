@@ -52,21 +52,13 @@ public class ArithmeticMenu {
             try {
                 option = scanner.nextInt();
                 switch (option) {
-                    case 1:
-                        representNumberToTwosComplement(scanner);
-                        break;
-                    case 2:
-
-                        break;
-                    case 3:
-                        binaryAddition(scanner);
-                        break;
-                    case 0:
-                        System.out.println(Color.GREEN + "\n↩ Regresando al menú principal..." + Color.RESET);
-                        break;
-                    default:
-                        System.out.println(Color.RED + "❌ Opción inválida. Vuelva a intentarlo." + Color.RESET);
-
+                    case 1 -> representNumberToTwosComplement(scanner);
+                    case 2 -> {
+                        // Pendiente de implementar
+                    }
+                    case 3 -> binaryAddition(scanner);
+                    case 0 -> System.out.println(Color.GREEN + "\n↩ Regresando al menú principal..." + Color.RESET);
+                    default -> System.out.println(Color.RED + "❌ Opción inválida. Vuelva a intentarlo." + Color.RESET);
                 }
             }catch (InputMismatchException inputMismatchException) {
                 System.out.println(Color.RED + "❌ ERROR: ingrese un número entero. " + Color.RESET);
@@ -100,19 +92,13 @@ public class ArithmeticMenu {
             int option = scanner.nextInt();
 
             switch (option) {
-                case 1:
-                    bits = 8;
-                    break;
-                case 2:
-                    bits = 16;
-                    break;
-                case 3:
-                    bits = 32;
-                    break;
-                default:
+                case 1 -> bits = 8;
+                case 2 -> bits = 16;
+                case 3 -> bits = 32;
+                default -> {
                     System.out.println(Color.RED + "❌ Opción de bits inválida." + Color.RESET);
                     return;
-
+                }
             }
 
             TwosComplementEncoder twosComplementEncoder = new TwosComplementEncoder();
@@ -167,18 +153,13 @@ public class ArithmeticMenu {
             int bits;
 
             switch (option) {
-                case 1:
-                    bits = 8;
-                    break;
-                case 2:
-                    bits = 16;
-                    break;
-                case 3:
-                    bits = 32;
-                    break;
-                default:
+                case 1 -> bits = 8;
+                case 2 -> bits = 16;
+                case 3 -> bits = 32;
+                default -> {
                     System.out.println(Color.RED + "❌ Opción de bits inválida." + Color.RESET);
                     return;
+                }
             }
 
             // Creamos el objeto que se encargará de realizar la suma

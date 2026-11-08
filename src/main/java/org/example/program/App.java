@@ -30,17 +30,12 @@ public class App {
 
             option  = scanner.nextInt();
             switch(option) {
-                case 1:
-                    converterMenu.decimalToOtherBases(scanner);
-                    break;
-                case 2:
-                    converterMenu.otherBasesToDecimal(scanner);
-                    break;
-                case 3:
+                case 1 -> converterMenu.decimalToOtherBases(scanner);
+                case 2 -> converterMenu.otherBasesToDecimal(scanner);
+                case 3 -> {
                     ArithmeticMenu arithmeticMenu = new ArithmeticMenu();
                     arithmeticMenu.showMenu(scanner);
-                    break;
-
+                }
             }
 
         } while (option != 0);

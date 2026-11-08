@@ -71,25 +71,17 @@ public class ConverterMenu {
         BaseConverter baseConverter = null;
 
         switch (option) {
-            case 1:
-                baseConverter = new Binary();
-                break;
-
-            case 2:
-                baseConverter = new Hexadecimal();
-                break;
-
-            case 3:
-                baseConverter = new Octal();
-                break;
-
-            case 0:
+            case 1 -> baseConverter = new Binary();
+            case 2 -> baseConverter = new Hexadecimal();
+            case 3 -> baseConverter = new Octal();
+            case 0 -> {
                 System.out.println(Color.YELLOW + " ↩ Saliendo del conversor..." + Color.RESET);
                 return;
-
-            default:
+            }
+            default -> {
                 System.out.println(Color.RED + " ❌ Opción de base no válida." + Color.RESET);
                 return;
+            }
         }
 
         System.out.println(Color.CYAN + "\n ➔ Resultado de la conversión: " + Color.BOLD + Color.GREEN +
@@ -133,28 +125,26 @@ public class ConverterMenu {
         String regex = "";
 
         switch (option) {
-            case 1:
+            case 1 -> {
                 baseConverter = new Binary();
                 regex = "[0-1]+";
-                break;
-
-            case 2:
+            }
+            case 2 -> {
                 baseConverter = new Hexadecimal();
                 regex = "[0-9A-Fa-f]+";
-                break;
-
-            case 3:
+            }
+            case 3 -> {
                 baseConverter = new Octal();
                 regex = "[0-7]+";
-                break;
-
-            case 0:
+            }
+            case 0 -> {
                 System.out.println(Color.YELLOW + " ↩ Saliendo del conversor..." + Color.RESET);
                 return;
-
-            default:
+            }
+            default -> {
                 System.out.println(Color.RED + " ❌ Opción de base no válida." + Color.RESET);
                 return;
+            }
         }
 
         while (!flag) {
