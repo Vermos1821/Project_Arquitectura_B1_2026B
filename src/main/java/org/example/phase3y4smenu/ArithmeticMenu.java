@@ -1,5 +1,7 @@
-package org.example;
+package org.example.phase3y4smenu;
 
+import org.example.phase3y4.BinaryAddition;
+import org.example.phase3y4.TwosComplementEncoder;
 import org.example.util.Color;
 
 import java.util.InputMismatchException;

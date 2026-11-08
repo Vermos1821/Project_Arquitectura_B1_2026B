@@ -1,8 +1,8 @@
-package org.example;
+package org.example.phase1y2;
 
-public class Octal implements BaseConverter {
+public class Binary implements BaseConverter {
 
-    private final int base = 8;
+    private final int base = 2;
 
     @Override
     public String convertFromDecimal(int numberDecimal) {
@@ -28,7 +28,7 @@ public class Octal implements BaseConverter {
         int power = 0;
 
         for (int i = numberInBase.length() - 1; i >= 0; i--) {
-            char character =  numberInBase.charAt(i);
+            char character = numberInBase.charAt(i);
 
             int digit = Character.getNumericValue(character);
             int positionValue = digit * (int) Math.pow(base, power);
