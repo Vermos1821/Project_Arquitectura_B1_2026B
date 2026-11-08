@@ -7,7 +7,6 @@ import org.example.util.Color;
 import java.util.Scanner;
 
 public class App {
-
     static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         mainMenu(scanner);
