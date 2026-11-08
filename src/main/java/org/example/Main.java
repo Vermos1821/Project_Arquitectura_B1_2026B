@@ -29,10 +29,40 @@ public class Main {
                 case 2:
                     otherBasesToDecimal(scanner);
                     break;
+                case 3:
+                    binaryAddition(scanner);
+                    break;
             }
 
         } while (option != 0);
     }
+
+
+    static void binaryAddition(Scanner scanner) {
+
+        int firstNumber;
+        int secondNumber;
+
+        try {
+            System.out.print("\nEnter the first integer (-128 to 127): ");
+            firstNumber = scanner.nextInt();
+
+            System.out.print("Enter the second integer (-128 to 127): ");
+            secondNumber = scanner.nextInt();
+
+        } catch (InputMismatchException inputMismatchException) {
+
+            System.out.println("Error: Please enter valid integers.");
+
+            scanner.nextLine();
+            return;
+        }
+
+        BinaryAddition binaryAddition = new BinaryAddition();
+
+        binaryAddition.addNumbers(firstNumber, secondNumber);
+    }
+
 
     static void decimalToOtherBases(Scanner scanner) {
         int numberDecimal = 0;
