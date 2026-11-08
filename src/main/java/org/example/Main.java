@@ -10,6 +10,7 @@ public class Main {
     public static final String GREEN = "\u001B[32m";
     public static final String YELLOW = "\u001B[33m";
     public static final String RED = "\u001B[31m";
+
     static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         mainMenu(scanner);
@@ -40,42 +41,14 @@ public class Main {
                     otherBasesToDecimal(scanner);
                     break;
                 case 3:
-                    binaryAddition(scanner);
+                    ArithmeticMenu arithmeticMenu = new ArithmeticMenu();
+                    arithmeticMenu.showMenu(scanner);
                     break;
+
             }
 
         } while (option != 0);
     }
-
-
-    static void binaryAddition(Scanner scanner) {
-
-        int firstNumber;
-        int secondNumber;
-
-        //solicitud y validacion de datos por medio del catch
-        try {
-            System.out.print("\nEnter the first integer (-128 to 127): ");
-            firstNumber = scanner.nextInt();
-
-            System.out.print("Enter the second integer (-128 to 127): ");
-            secondNumber = scanner.nextInt();
-
-        } catch (InputMismatchException inputMismatchException) {
-
-            System.out.println("Error: Please enter valid integers.");
-
-            scanner.nextLine();
-            return;
-        }
-
-        //crea un objeto de la clase binaria
-        BinaryAddition binaryAddition = new BinaryAddition();
-
-        //Ejecuta la suma de los dos numeros ingresados
-        binaryAddition.addNumbers(firstNumber, secondNumber);
-    }
-
 
     static void decimalToOtherBases(Scanner scanner) {
         int numberDecimal = 0;
