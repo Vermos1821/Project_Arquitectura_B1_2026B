@@ -53,6 +53,7 @@ public class Main {
         int firstNumber;
         int secondNumber;
 
+        //solicitud y validacion de datos por medio del catch
         try {
             System.out.print("\nEnter the first integer (-128 to 127): ");
             firstNumber = scanner.nextInt();
@@ -68,8 +69,10 @@ public class Main {
             return;
         }
 
+        //crea un objeto de la clase binaria
         BinaryAddition binaryAddition = new BinaryAddition();
 
+        //Ejecuta la suma de los dos numeros ingresados
         binaryAddition.addNumbers(firstNumber, secondNumber);
     }
 
