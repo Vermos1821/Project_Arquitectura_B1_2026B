@@ -69,4 +69,22 @@ public class TwosComplementEncoder {
         }
         return result;
     }
+
+    public String encode(long number, int bits) {
+        if (!isValidBitSize(bits)) {
+            return "ERROR: la cantidad de bits debe ser 8, 16 o 32.";
+        }
+        if (!isRepresentable(number, bits)) {
+            return "ERROR: el numero esta fuera del rango permitido.";
+        }
+
+        if (number >= 0) {
+            return decimalToBinary(number, bits);
+        }
+
+        long absolute = -number;
+        String binary = decimalToBinary(absolute, bits);
+        String ones = invertBits(binary);
+        return addOne(ones);
+    }
 }
