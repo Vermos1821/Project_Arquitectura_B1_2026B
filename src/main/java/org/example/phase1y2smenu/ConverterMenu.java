@@ -75,7 +75,7 @@ public class ConverterMenu {
             case 2 -> baseConverter = new Hexadecimal();
             case 3 -> baseConverter = new Octal();
             case 0 -> {
-                System.out.println(Color.YELLOW + " ↩ Saliendo del conversor..." + Color.RESET);
+                System.out.println(Color.GREEN + "\n ↩ Saliendo del conversor..." + Color.RESET);
                 return;
             }
             default -> {
@@ -138,7 +138,7 @@ public class ConverterMenu {
                 regex = "[0-7]+";
             }
             case 0 -> {
-                System.out.println(Color.YELLOW + " ↩ Saliendo del conversor..." + Color.RESET);
+                System.out.println(Color.GREEN + "\n ↩ Saliendo del conversor..." + Color.RESET);
                 return;
             }
             default -> {
