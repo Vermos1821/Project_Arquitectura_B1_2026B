@@ -1,183 +1,176 @@
 package org.example;
 
+/**
+ * Realiza la suma de dos números enteros utilizando complemento a dos.
+ * Permite elegir con representaciones de 8, 16 y 32 bits.
+ */
 public class BinaryAddition {
 
-    //definir la cantidad de bits que va hacer utilizada en las operaciones
-    //valor minimo que utiliza el signo: 8 bits
-    private static final int BIT_LENGTH = 8;
+    /**
+     * Suma dos números enteros usando la cantidad de bits que el usuario
+     * ha seleccionado.
+     *
+     * @param firstNumber primer número que se desea sumar.
+     * @param secondNumber segundo número que se desea sumar.
+     * @param bits cantidad de bits que se usará (8, 16 o 32).
+     */
 
-    //valor maximo para representar utilizano los 8 bits
-    private static final int MIN_VALUE = -128;
-    //complemento a dos y muestra los resultados de la suma de dos numeros enteros
-    private static final int MAX_VALUE = 127;
+    public void addNumbers(int firstNumber, int secondNumber, int bits) {
+        // Creamos el codificador para reutilizar sus métodos de validación y conversión.
+        TwosComplementEncoder twosComplementEncoder = new TwosComplementEncoder();
 
-    public void addNumbers(int firstNumber, int secondNumber) {
-        //verifica que ambos numeros esten en el rango correspondiente
-        if (firstNumber < MIN_VALUE || firstNumber > MAX_VALUE ||
-                secondNumber < MIN_VALUE || secondNumber > MAX_VALUE) {
-
-            System.out.println("Error: Numbers must be between -128 and 127.");
+        // Comprobamos que la cantidad de bits sea válida
+        if (!twosComplementEncoder.isValidBitSize(bits)) {
+            System.out.println("ERROR: la cantidad de bits debe ser de 8, 16 o 32");
             return;
         }
 
-        //convertir ambos numero en su expresion binaria con complemento a dos
-        String firstBinary = toTwosComplement(firstNumber);
-        String secondBinary = toTwosComplement(secondNumber);
+        // Verificamos que ambos números puedan representarse con los bits que se seleccionó
+        if(!twosComplementEncoder.isRepresentable(firstNumber, bits) ||
+                !twosComplementEncoder.isRepresentable(secondNumber, bits)) {
+            System.out.println("ERROR: uno o ambas entradas está fuera del rango permitido.");
+            return;
+        }
 
-        //suma de los dos operandos
+        // Convertimos ambos números a complemento a dos reutilizando el codificador.
+        String firstBinary = twosComplementEncoder.encode(firstNumber, bits);
+        String secondBinary = twosComplementEncoder.encode(secondNumber, bits);
+
+        // Suma binaria de los dos operandos
         String binaryResult = addBinary(firstBinary, secondBinary);
 
-        //validacion para saber si ocurrio un desbordamiento
-        boolean overflow = hasOverflow(
-                firstBinary, secondBinary, binaryResult
-        );
+        // Validación para saber si ocurrió un desbordamiento
+        boolean overflow = hasOverflow(firstBinary, secondBinary, binaryResult);
 
-        //convertir el resultado de binario a decimal
-        int decimalResult = toDecimal(binaryResult);
+        // Convertimos el resultado de binario a decimal
+        long decimalResult = toDecimal(binaryResult);
 
-        //calcular la suma de los dos numeros originales
-        int mathematicalSum = firstNumber + secondNumber;
+        // Calculamos la suma matemática sin la necesidad de la cantidad de bits
+        long mathematicalSum = (long) firstNumber + secondNumber;
 
         //se muestran los resultados de la operacion
-        System.out.println("\n BINARY ADDITION ");
+        System.out.println("\n SUMA BINARIA ");
+        System.out.println("Número de bits: " + bits);
 
-        System.out.println("First number: " + firstNumber);
-        System.out.println("Second number: " + secondNumber);
+        System.out.println("Primer número: " + firstNumber);
+        System.out.println("Segundo número: " + secondNumber);
 
-        System.out.println("\nFirst operand:  " + firstBinary);
-        System.out.println("Second operand: " + secondBinary);
+        System.out.println("\nPrimer operando:  " + firstBinary);
+        System.out.println("Segundo operando: " + secondBinary);
 
         System.out.println("-------------------------------------");
 
-        System.out.println("Binary result: " + binaryResult);
-        System.out.println("Decimal result (8-bit signed): " + decimalResult);
-        System.out.println("Mathematical sum: " + mathematicalSum);
+        System.out.println("Resultado binario: " + binaryResult);
+        System.out.println("Resultado decimal (" + bits + "-bit con signo): " + decimalResult);
+        System.out.println("Suma matemática: " + mathematicalSum);
         System.out.println("Overflow: " + (overflow ? "YES" : "NO"));
 
     }
 
-    //convierte un numero entero en su representacion binaria utilizando a dos
-    private String toTwosComplement(int number) {
-
-        //si dicho numero es positivo o cero, se comvierte a binario
-        if (number >= 0) {
-            return toBinary(number);
-        }
-
-        String binary = toBinary(Math.abs(number));
-        //invierte todos los bits para obtener el complemneto a 1
-        String invertedBinary = invertBits(binary);
-        //sumar uno al complemento a 1 para que sea el complemento a 2
-        return addBinary(invertedBinary, "00000001");
-    }
-
-    private String toBinary(int number) {
-
-        String binary = "";
-
-        //conversion de un numero decimal a binario mediante divisiones sucesivas
-        do {
-            int remainder = number % 2;
-
-            binary = remainder + binary;
-            number = number / 2;
-
-        } while (number > 0);
-
-        //agregar ceros a la izquierda para completar los 8 bits
-        while (binary.length() < BIT_LENGTH) {
-            binary = "0" + binary;
-        }
-
-        return binary;
-    }
-
-    private String invertBits(String binary) {
-
-        String invertedBinary = "";
-
-        //recorre la cadena y cambia cada bit su valor contrario
-        for (int i = 0; i < binary.length(); i++) {
-
-            if (binary.charAt(i) == '0') {
-                invertedBinary += "1";
-            } else {
-                invertedBinary += "0";
-            }
-        }
-
-        return invertedBinary;
-    }
-
+    /**
+     * Suma dos cadenas binarias de igual longitud usando el acarreo.
+     *
+     * @param firstBinary primera cadena binaria.
+     * @param secondBinary segunda cadena binaria.
+     * @return resultado a binario con la misma cantidad de bits
+     */
     private String addBinary(String firstBinary, String secondBinary) {
 
-        char[] result = new char[BIT_LENGTH];
-
+        int bitLength = firstBinary.length();
+        char[] result = new char[bitLength];
         int carry = 0;
 
-        //suma de los bits desde la posicion mas significativa a la menos significativa
-        for (int i = BIT_LENGTH - 1; i >= 0; i--) {
+        // Suma de los bits desde la posición más significativa a la menos significativa
+        for (int i = bitLength - 1; i >= 0; i--) {
 
             int firstBit = firstBinary.charAt(i) - '0';
             int secondBit = secondBinary.charAt(i) - '0';
 
-            //suma los dos bits junto con el acarreo anterior
             int bitSum = firstBit + secondBit + carry;
 
-            //Guarda el bit correspondiente al resultado
             result[i] = (char) ('0' + (bitSum % 2));
 
-            //calcula el acarreo para la siguiente posicion.
             carry = bitSum / 2;
         }
 
+        // El acarreo final se descarta porque estamos trabajando con una longitud fija.
         return new String(result);
     }
 
-    private boolean hasOverflow(
-            String firstBinary,
-            String secondBinary,
-            String binaryResult) {
-
-        //se obtiene el bit de signo de cada operando y del resultado
+    /**
+     *
+     * @param firstBinary representación del primer operando.
+     * @param secondBinary representación del segundo operando.
+     * @param binaryResult representación binaria del resultado.
+     * @return true si es que existe overflow; false si no es caso.
+     */
+    private boolean hasOverflow(String firstBinary, String secondBinary, String binaryResult) {
         char firstSign = firstBinary.charAt(0);
         char secondSign = secondBinary.charAt(0);
         char resultSign = binaryResult.charAt(0);
 
-        //verifica si los dos operandos tienen el mismo signo
-        return firstSign == secondSign &&
-                firstSign != resultSign;
+        // Verifica si los dos operandos tienen el mismo signo
+        return firstSign == secondSign && firstSign != resultSign;
     }
 
-    private int toDecimal(String binary) {
-
-        //comprobar que el bit mas significativo indica un numero negativo
+    /**
+     *Convierte una representación en complemento a dos a decimal.
+     *
+     * @param binary cadena binaria la cual representa el resultado.
+     * @return valor decimal con signo.
+     */
+    private long toDecimal(String binary) {
         boolean negative = binary.charAt(0) == '1';
-
-        String magnitudeBinary;
+        long decimalResult = 0;
 
         if (negative) {
-            //invierte los bits y suma uno para obtener la magnitud
-            magnitudeBinary = addBinary(
-                    invertBits(binary), "00000001"
-            );
-        } else {
-            //si el numero es positivo conserva su representacion binaria
-            magnitudeBinary = binary;
+            // En números negativos, se obtiene la magnitud a través del complemento a dos.
+            String magnitudeBinary = addBinary(invertBits(binary), createOne(binary.length()));
+
+            for (int i = 0; i < magnitudeBinary.length(); i++) {
+                int bit = magnitudeBinary.charAt(i) - '0';
+                decimalResult = decimalResult* 2 + bit;
+            }
+
+            return -decimalResult;
         }
 
-        int decimalResult = 0;
+        // Convierte de manera directa los números positivos.
+        for (int i = 0; i < binary.length(); i++) {
 
-        //convierte la magnitud binaria a decimal por medio de multiplicaciones sucesivas
-        for (int i = 0; i < magnitudeBinary.length(); i++) {
-
-            int bit = magnitudeBinary.charAt(i) - '0';
-
+            int bit = binary.charAt(i) - '0';
             decimalResult = decimalResult * 2 + bit;
+
         }
 
-        //proporciona el resultado con el signo correspondiente
-        return negative ? -decimalResult : decimalResult;
+        return decimalResult;
+    }
+
+    /**
+     * Invierte los bits de una cadena binaria.
+     *
+     * @param binary cadena binaria original.
+     * @return cadena con los bits invertidos.
+     */
+    private String invertBits(String binary) {
+        StringBuilder inverted = new StringBuilder();
+
+        for (int i = 0; i < binary.length(); i++) {
+            inverted.append(binary.charAt(i) == '0' ? '1' : '0');
+        }
+
+        return inverted.toString();
+    }
+
+    /**
+     * Creamos una cadena binaria la cual representa el número uno
+     * con la longitud indicada.
+     *
+     * @param bitLength longitud de la cadena.
+     * @return cadena binaria con el valor uno.
+     */
+    private String createOne(int bitLength) {
+        return "0".repeat(bitLength - 1) + "1";
     }
 }
 

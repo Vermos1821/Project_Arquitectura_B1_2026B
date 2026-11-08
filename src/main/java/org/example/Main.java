@@ -26,7 +26,6 @@ public class Main {
             System.out.println("  [" + GREEN + " 1 " + RESET + "] ➔ Decimal a otras bases");
             System.out.println("  [" + GREEN + " 2 " + RESET + "] ➔ Otras bases a decimal");
             System.out.println("  [" + GREEN + " 3 " + RESET + "] ➔ Aritmética Binaria y Complemento a Dos");
-            System.out.println("  [" + GREEN + " 4 " + RESET + "] ➔ Suma y Resta en binario ");
             System.out.println(CYAN + "-------------------------------------------------" + RESET);
             System.out.println("  [" + RED + " 0 " + RESET + "] ➔ Salir del sistema");
             System.out.println(CYAN + "=================================================" + RESET);

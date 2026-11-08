@@ -1,5 +1,7 @@
 package org.example;
 
+import org.example.util.Color;
+
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -21,13 +23,29 @@ public class ArithmeticMenu {
         int option;
 
         do {
-            System.out.println("\n===== ARITMÉTICA BINARIA Y COMPLEMENTO A DOS =====");
-            System.out.println("1. Representar número en Complemento a Dos");
-            System.out.println("2. Verificar representación en Complemento a Dos");
-            System.out.println("3. Suma binaria");
-            System.out.println("4. Resta binaria");
-            System.out.println("0. Regresar al menú principal");
-            System.out.print("Ingrese una opción: ");
+            System.out.println(Color.CYAN
+                    + "\n=================================================" + Color.RESET);
+            System.out.println(Color.BOLD + Color.YELLOW
+                    + "  ✨ ARITMÉTICA BINARIA Y COMPLEMENTO A DOS ✨"
+                    + Color.RESET);
+            System.out.println(Color.CYAN
+                    + "=================================================" + Color.RESET);
+            System.out.println("  [" + Color.GREEN + " 1 " + Color.RESET
+                    + "] ➔ Representar número en Complemento a Dos");
+            System.out.println("  [" + Color.GREEN + " 2 " + Color.RESET
+                    + "] ➔ Verificar representación en Complemento a Dos");
+            System.out.println("  [" + Color.GREEN + " 3 " + Color.RESET
+                    + "] ➔ Suma binaria");
+            System.out.println("  [" + Color.GREEN + " 4 " + Color.RESET
+                    + "] ➔ Resta binaria");
+            System.out.println(Color.CYAN
+                    + "-------------------------------------------------" + Color.RESET);
+            System.out.println("  [" + Color.RED + " 0 " + Color.RESET
+                    + "] ➔ Regresar al menú principal");
+            System.out.println(Color.CYAN
+                    + "=================================================" + Color.RESET);
+            System.out.print(Color.YELLOW
+                    + " ➤ Ingrese una opción: " + Color.RESET);
 
             try {
                 option = scanner.nextInt();
@@ -41,10 +59,15 @@ public class ArithmeticMenu {
                     case 3:
                         binaryAddition(scanner);
                         break;
+                    case 0:
+                        System.out.println(Color.GREEN + "\n↩ Regresando al menú principal..." + Color.RESET);
+                        break;
+                    default:
+                        System.out.println(Color.RED + "❌ Opción inválida. Vuelva a intentarlo." + Color.RESET);
 
                 }
             }catch (InputMismatchException inputMismatchException) {
-                System.out.println("Error: ingrese un número entero. ");
+                System.out.println(Color.RED + "❌ ERROR: ingrese un número entero. " + Color.RESET);
                 scanner.nextLine();
                 option = -1;
             }
@@ -62,14 +85,15 @@ public class ArithmeticMenu {
         int bits;
 
         try {
-            System.out.println("\nIngrese un número decimal entero: ");
+            System.out.print(Color.YELLOW + "\n➤ Ingrese un número decimal entero: " + Color.RESET);
             number = scanner.nextLong();
 
-            System.out.println("\nSeleccione la cantidad de bits:");
-            System.out.println("1. 8 bits");
-            System.out.println("2. 16 bits");
-            System.out.println("3. 32 bits");
-            System.out.print("Ingrese una opción: ");
+            System.out.println(Color.CYAN + "\nSeleccione la cantidad de bits:" + Color.RESET);
+            System.out.println("  [" + Color.GREEN + " 1 " + Color.RESET + "] 8 bits");
+            System.out.println("  [" + Color.GREEN + " 2 " + Color.RESET + "] 16 bits");
+            System.out.println("  [" + Color.GREEN + " 3 " + Color.RESET + "] 32 bits");
+
+            System.out.print(Color.YELLOW + "➤ Ingrese una opción: " + Color.RESET);
 
             int option = scanner.nextInt();
 
@@ -84,7 +108,7 @@ public class ArithmeticMenu {
                     bits = 32;
                     break;
                 default:
-                    System.out.println("Opción de bits inválida.");
+                    System.out.println(Color.RED + "❌ Opción de bits inválida." + Color.RESET);
                     return;
 
             }
@@ -92,40 +116,78 @@ public class ArithmeticMenu {
             TwosComplementEncoder twosComplementEncoder = new TwosComplementEncoder();
             String result = twosComplementEncoder.encode(number, bits);
 
-            System.out.println("\n===== RESULTADO =====");
-            System.out.println("Número decimal: " + number);
-            System.out.println("Cantidad de bits: " + bits);
-            System.out.println("Representación binaria: " + result);
+            System.out.println(Color.CYAN + "\n=================================================" + Color.RESET);
+            System.out.println(Color.BOLD + Color.YELLOW + "             RESULTADO DE LA CONVERSIÓN" + Color.RESET);
+            System.out.println(Color.CYAN + "=================================================" + Color.RESET);
+
+            System.out.println("Número decimal: " + Color.GREEN + number + Color.RESET);
+            System.out.println("Cantidad de bits: " + Color.GREEN + bits + Color.RESET);
+
+            if (result.startsWith("ERROR:")) {
+                System.out.println(Color.RED + result + Color.RESET);
+            } else {
+                System.out.println("Representación en complemento a dos: " + Color.BOLD + Color.GREEN + result
+                                    + Color.RESET);
+            }
+
+            System.out.println(Color.CYAN + "=================================================" + Color.RESET);
         } catch (InputMismatchException inputMismatchException) {
-            System.out.println("Error: ingrese un número entero válido.");
+            System.out.println(Color.RED + "❌ Error: ingrese un número entero válido." + Color.RESET);
             scanner.nextLine();
         }
     }
 
     /**
-     * Gestiona la entrada de los operandos y ejecuta
-     * la operación de suma binaria
+     * Solicita los números y la cantidad de bits para realizar una suma binaria.
      *
-     * @param scanner objeto Scanner para leer los números
+     * @param scanner objeto Scanner para leer los datos ingresados.
      */
     private void binaryAddition(Scanner scanner) {
-        int firstNumber;
-        int secondNumber;
-
         try {
-            System.out.println("\nIngrese el primer número (-128 a 127): ");
-            firstNumber = scanner.nextInt();
+            System.out.println(Color.CYAN + "\n=================================================" + Color.RESET);
+            System.out.println(Color.BOLD + Color.YELLOW + "                 SUMA BINARIA" + Color.RESET);
+            System.out.println(Color.CYAN + "=================================================" + Color.RESET);
 
-            System.out.println("Ingrese el segundo número (-128 a 127): ");
-            secondNumber = scanner.nextInt();
+            System.out.print(Color.YELLOW + "➤ Ingrese el primer número: " + Color.RESET);
+            int firstNumber = scanner.nextInt();
+
+            System.out.print(Color.YELLOW + "➤ Ingrese el segundo número: " + Color.RESET);
+            int secondNumber = scanner.nextInt();
+
+            System.out.println(Color.CYAN + "\nSeleccione la cantidad de bits:" + Color.RESET);
+            System.out.println("  [" + Color.GREEN + " 1 " + Color.RESET + "] 8 bits");
+            System.out.println("  [" + Color.GREEN + " 2 " + Color.RESET + "] 16 bits");
+            System.out.println("  [" + Color.GREEN + " 3 " + Color.RESET + "] 32 bits");
+
+            System.out.print(Color.YELLOW + "➤ Ingrese una opción: " + Color.RESET);
+
+            int option = scanner.nextInt();
+            int bits;
+
+            switch (option) {
+                case 1:
+                    bits = 8;
+                    break;
+                case 2:
+                    bits = 16;
+                    break;
+                case 3:
+                    bits = 32;
+                    break;
+                default:
+                    System.out.println(Color.RED + "❌ Opción de bits inválida." + Color.RESET);
+                    return;
+            }
+
+            // Creamos el objeto que se encargará de realizar la suma
+            BinaryAddition binaryAddition = new BinaryAddition();
+
+            // Ejecutamos la operación con los números y bits seleccionados.
+            binaryAddition.addNumbers(firstNumber, secondNumber, bits);
 
         } catch (InputMismatchException inputMismatchException) {
-            System.out.println("Error: ingrese números enteros válidos. ");
+            System.out.println(Color.RED + "❌ Error: ingrese números enteros válidos." + Color.RESET);
             scanner.nextLine();
-            return;
         }
-
-        BinaryAddition binaryAddition = new BinaryAddition();
-        binaryAddition.addNumbers(firstNumber, secondNumber);
     }
 }
