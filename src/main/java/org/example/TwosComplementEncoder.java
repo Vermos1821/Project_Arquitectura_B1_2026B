@@ -38,5 +38,18 @@ public class TwosComplementEncoder {
 
         return binary;
     }
+    // Convierte numeros negativos usando complemento a dos
+    // Invierte todos los bits
+    private String invertBits(String binary){
+        String inverted = "";
+        for (int i = 0; i < binary.length(); i++) {
+            char bit = binary.charAt(i);
+            if (bit == '0') {
+                inverted = inverted + "1";
+            } else {
+                inverted = inverted + "0";
+            }
+        }
+        return inverted;
+    }
 }
-
