@@ -35,7 +35,6 @@ public class BinaryAddition {
         System.out.println("\nFirst operand:  " + firstBinary);
         System.out.println("Second operand: " + secondBinary);
 
-        System.out.println("-------------------------------------");
 
         System.out.println("Binary result: " + binaryResult);
         System.out.println("Decimal result (8-bit signed): " + decimalResult);
