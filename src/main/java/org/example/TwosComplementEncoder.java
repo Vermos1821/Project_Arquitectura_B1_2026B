@@ -17,7 +17,7 @@ public class TwosComplementEncoder {
 
     /** Comprueba si un número decimal se encuentra dentro del rango permitido para la cantidad de bits seleccionada.
      *
-     * @param number numero decimal que se desea representar.
+     * @param number número decimal que se desea representar.
      * @param bits cantidad de bits que se utilizará.
      * @return true si el número está dentro del rango permitido; caso contrario, false.
      */
@@ -109,7 +109,7 @@ public class TwosComplementEncoder {
      * absoluto, se invierte los bits y se suma uno.
      *
      * @param number número decimal que se desea convertir.
-     * @param bits cantidad de bits para representar el numero (8, 16 o 32).
+     * @param bits cantidad de bits para representar el número (8, 16 o 32).
      * @return cadena binaria que representa el número en complemento a dos, o un mensaje de error si los datos no son
      * válidos.
      */
