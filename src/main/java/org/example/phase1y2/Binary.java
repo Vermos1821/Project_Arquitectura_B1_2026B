@@ -5,7 +5,7 @@ public class Binary implements BaseConverter {
     private final int base = 2;
 
     @Override
-    public String convertFromDecimal(int numberDecimal) {
+    public String convertFromDecimal(long numberDecimal) {
         if (numberDecimal == 0) {
             return "0";
         }
@@ -13,7 +13,7 @@ public class Binary implements BaseConverter {
         String result = "";
 
         while (numberDecimal > 0) {
-            int remainder = numberDecimal % base;
+            long remainder = numberDecimal % base;
 
             result = remainder + result;
 
@@ -23,20 +23,40 @@ public class Binary implements BaseConverter {
     }
 
     @Override
-    public int convertToDecimal(String numberInBase) {
-        int decimalResult = 0;
-        int power = 0;
+    public long convertToDecimal(String numberInBase) {
+        long decimalResult = 0;
+        long powerValue = 1;
+        boolean powerOverflow = false;
 
         for (int i = numberInBase.length() - 1; i >= 0; i--) {
             char character = numberInBase.charAt(i);
 
             int digit = Character.getNumericValue(character);
-            int positionValue = digit * (int) Math.pow(base, power);
 
-            decimalResult += positionValue;
-            power++;
+            if (digit > 0) {
+                if (powerOverflow || powerValue > Long.MAX_VALUE / digit) {
+                throw new ArithmeticException("El número excede el límite de long.");
+            }
+
+            long positionValue = digit * powerValue;
+
+            if (decimalResult > Long.MAX_VALUE - positionValue) {
+                throw new ArithmeticException("El número excede el límite de long.");
+                }
+
+                decimalResult += positionValue;
+            }
+
+            long positionValue = digit * powerValue;
+
+            if (i > 0 && !powerOverflow) {
+                if (powerValue > Long.MAX_VALUE / base) {
+                    powerOverflow = true;
+                } else {
+                    powerValue = powerValue * base;
+                }
+            }
         }
-
         return decimalResult;
     }
 }
