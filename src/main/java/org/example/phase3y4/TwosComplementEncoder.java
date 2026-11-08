@@ -1,4 +1,4 @@
-package org.example;
+package org.example.phase3y4;
 
 /**
  * Clase encargada de convertir números decimales enteros a su representación binaria usando complemento a dos. Permite
