@@ -24,14 +24,14 @@ public class ConverterMenu {
      * los datos ingresados por el usuario.
      */
     public void decimalToOtherBases(Scanner scanner) {
-        int numberDecimal = 0;
+        long numberDecimal = 0;
         boolean flag = false;
 
         while (!flag) {
             System.out.print(Color.YELLOW + "\n ➤ Ingrese el número decimal positivo a convertir: " + Color.RESET);
 
             try {
-                numberDecimal = scanner.nextInt();
+                numberDecimal = scanner.nextLong();
 
                 if (numberDecimal < 0) {
                     System.out.println(Color.RED + " ❌ Entrada inválida, debe ser un número entero positivo." + Color.RESET);
@@ -160,7 +160,11 @@ public class ConverterMenu {
             }
         }
 
-        System.out.println(Color.CYAN + "\n ➔ El número representado en decimal es: " + Color.BOLD + Color.GREEN +
-                            baseConverter.convertToDecimal(numberInBase) + Color.RESET);
+        try {
+            System.out.println(Color.CYAN + "\n ➔ El número representado en decimal es: " + Color.BOLD + Color.GREEN +
+                    baseConverter.convertToDecimal(numberInBase) + Color.RESET);
+        } catch (ArithmeticException arithmeticException) {
+            System.out.println(Color.RED + " ❌ Error: El nùmero excede el límite permitido para long." + Color.RESET);
+        }
     }
 }
