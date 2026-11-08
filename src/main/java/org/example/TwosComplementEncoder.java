@@ -52,4 +52,21 @@ public class TwosComplementEncoder {
         }
         return inverted;
     }
+    // Sumar 1 al numero binario invertido
+    private String addOne(String binary) {
+        String result = "";
+        int carry = 1;
+        for (int i = binary.length() - 1; i >= 0; i--) {
+            char bit = binary.charAt(i);
+            if (bit == '1' && carry == 1) {
+                result = "0" + result;
+            } else if (bit == '0' && carry == 1) {
+                result = "1" + result;
+                carry = 0;
+            } else {
+                result = bit + result;
+            }
+        }
+        return result;
+    }
 }
