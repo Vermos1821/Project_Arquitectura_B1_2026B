@@ -12,7 +12,7 @@ public class BinaryAddition {
     private static final int MAX_VALUE = 127;
 
     public void addNumbers(int firstNumber, int secondNumber) {
-        //verificar que ambos numeros esten en el rango correspondiente
+        //verifica que ambos numeros esten en el rango correspondiente
         if (firstNumber < MIN_VALUE || firstNumber > MAX_VALUE ||
                 secondNumber < MIN_VALUE || secondNumber > MAX_VALUE) {
 
