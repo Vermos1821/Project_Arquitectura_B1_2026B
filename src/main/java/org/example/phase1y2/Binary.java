@@ -1,9 +1,23 @@
 package org.example.phase1y2;
 
+/**
+ * Clase que implementa la interfaz {@link BaseConverter} para la gestión
+ * de la conversión en ambas direcciones entre el sistema decimal y
+ * el sistema binario (base 2).
+ */
 public class Binary implements BaseConverter {
-
+    /**
+     * Base numérica usada para las conversiones (Binario = 2).
+     */
     private final int base = 2;
 
+    /**
+     * Conviertimos un número decimal positivo a su representación en binario.
+     * Usa el método de divisiones sucesivas entre 2.
+     *
+     * @param numberDecimal El número decimal (base 10) a convertir.
+     * @return Una cadena de texto ({@code String}) que representa el número en sistema binario.
+     */
     @Override
     public String convertFromDecimal(long numberDecimal) {
         if (numberDecimal == 0) {
@@ -22,6 +36,11 @@ public class Binary implements BaseConverter {
         return result;
     }
 
+    /**
+     *
+     * @param numberInBase
+     * @return
+     */
     @Override
     public long convertToDecimal(String numberInBase) {
         long decimalResult = 0;
