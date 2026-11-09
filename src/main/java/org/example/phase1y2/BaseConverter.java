@@ -9,7 +9,7 @@ public interface BaseConverter {
      * Convierte un número decimal a su representación en la base de destino.
      *
      * @param numberDecimal El número en sistema decimal (base 10) que desea convertir.
-     * @returnUna cadena de texto ({@code String}) con la representación del número en la base correspondiente.
+     * @return Una cadena de texto ({@code String}) con la representación del número en la base correspondiente.
      */
     String convertFromDecimal(long numberDecimal);
 
