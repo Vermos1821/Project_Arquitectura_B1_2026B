@@ -1,9 +1,23 @@
 package org.example.phase1y2;
 
+/**
+ * Realiza conversiones entre el sistema decimal y el sistema octal.
+ * También implementamos los métodos definidos en la interfaz Base Converter.
+ */
 public class Octal implements BaseConverter {
 
+    /**
+     * Base numérica usada para las conversiones (Octal = 8).
+     */
     private final int base = 8;
 
+    /**
+     * Convertimos un número decimal positivo a su representación en octal.
+     * Usa el método de divisiones sucesivas entre 8.
+     *
+     * @param numberDecimal El número decimal (base 10) a convertir.
+     * @return Una cadena de texto ({@code String}) que representa el número en sistema binario.
+     */
     @Override
     public String convertFromDecimal(long numberDecimal) {
         if (numberDecimal == 0) {
@@ -22,6 +36,15 @@ public class Octal implements BaseConverter {
         return result;
     }
 
+    /**
+     * Convertimos una cadena de texto el cual representa un número octal a su valor decimal.
+     * Incluye validación de overflow para estar seguros qué el resultado
+     * no exceda el límite máximo que soporta por el tipo de dato {@code long}
+     *
+     * @param numberInBase El número octal representado como cadena de texto.
+     * @return El valor que equivale en sistema decimal (base 10) como {@code long}.
+     * @throws ArithmeticException Si el número convertido se excede del límite máximo de {@code Long.MAX_VALUE}.
+     */
     @Override
     public long convertToDecimal(String numberInBase) {
         long decimalResult = 0;
