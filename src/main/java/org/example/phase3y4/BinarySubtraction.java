@@ -14,26 +14,25 @@ public class BinarySubtraction {
      * @param bits cantidad de bits que se usará (8, 16 o 32).
      */
     public void subtractNumbers(int firstNumber, int secondNumber, int bits) {
+        // Creamos el codificador para reutilizar sus métodos de validación y conversión.
+        TwosComplementEncoder twosComplementEncoder = new TwosComplementEncoder();
+
         // Comprobamos que la cantidad de bits sea válida
-        if (bits != 8 && bits != 16 && bits != 32) {
+        if (!twosComplementEncoder.isValidBitSize(bits)) {
             System.out.println("ERROR: la cantidad de bits debe ser de 8, 16 o 32");
             return;
         }
 
         // Verificamos que ambos números puedan representarse con los bits que se seleccionó
-        long limit = 1;
-        for (int i = 0; i < bits - 1; i++) {
-            limit = limit * 2;
-        }
-        if (firstNumber < -limit || firstNumber > limit - 1
-                || secondNumber < -limit || secondNumber > limit - 1) {
+        if (!twosComplementEncoder.isRepresentable(firstNumber, bits) ||
+                !twosComplementEncoder.isRepresentable(secondNumber, bits)) {
             System.out.println("ERROR: uno o ambas entradas está fuera del rango permitido.");
             return;
         }
 
-        // Convertimos ambos números a complemento a dos
-        String firstBinary = toTwosComplement(firstNumber, bits);
-        String secondBinary = toTwosComplement(secondNumber, bits);
+        // Convertimos ambos números a complemento a dos reutilizando el codificador.
+        String firstBinary = twosComplementEncoder.encode(firstNumber, bits);
+        String secondBinary = twosComplementEncoder.encode(secondNumber, bits);
 
         // Obtenemos el complemento a dos del segundo operando (invertir bits y sumar uno)
         String secondComplement = addOne(invertBits(secondBinary));
@@ -67,49 +66,6 @@ public class BinarySubtraction {
         System.out.println("Resultado decimal (" + bits + "-bit con signo): " + decimalResult);
         System.out.println("Resta matemática: " + mathematicalDifference);
         System.out.println("Overflow: " + (overflow ? "YES" : "NO"));
-    }
-
-    /**
-     * Convierte un número decimal a su representación en complemento a dos.
-     * Para números negativos se obtiene el valor absoluto, se invierten los bits y se suma uno.
-     *
-     * @param number número decimal que se desea convertir.
-     * @param bits cantidad de bits de la representación.
-     * @return cadena binaria en complemento a dos.
-     */
-    private String toTwosComplement(int number, int bits) {
-        if (number >= 0) {
-            return decimalToBinary(number, bits);
-        }
-
-        long absolute = -(long) number;
-        String binary = decimalToBinary(absolute, bits);
-
-        return addOne(invertBits(binary));
-    }
-
-    /**
-     * Convierte un número decimal positivo a binario, completando con ceros a la izquierda
-     * hasta alcanzar la cantidad de bits indicada.
-     *
-     * @param number número decimal positivo.
-     * @param bits cantidad de bits que debe tener el resultado.
-     * @return cadena con la representación binaria.
-     */
-    private String decimalToBinary(long number, int bits) {
-        String binary = "";
-
-        while (number > 0) {
-            int remainder = (int) (number % 2);
-            binary = remainder + binary;
-            number = number / 2;
-        }
-
-        while (binary.length() < bits) {
-            binary = "0" + binary;
-        }
-
-        return binary;
     }
 
     /**
@@ -182,7 +138,6 @@ public class BinarySubtraction {
             carry = bitSum / 2;
         }
 
-        // El acarreo final se descarta porque estamos trabajando con una longitud fija.
         return new String(result);
     }
 
@@ -190,7 +145,7 @@ public class BinarySubtraction {
      * Determina si la resta produjo desbordamiento.
      *
      * @param firstBinary representación del primer operando.
-     * @param secondBinary representación del segundo operando (original, sin complementar).
+     * @param secondBinary representación del segundo operando.
      * @param binaryResult representación binaria del resultado.
      * @return true si existe overflow; false en caso contrario.
      */
