@@ -1,8 +1,9 @@
 package org.example.phase1y2;
 
 /**
- * Realiza conversiones entre el sistema decimal y el sistema octal.
- * También implementamos los métodos definidos en la interfaz Base Converter.
+ * Clase que implementa la interfaz {@link BaseConverter} para la gestión
+ * de la conversión en ambas direcciones entre el sistema decimal y
+ * el sistema octal (base 2).
  */
 public class Octal implements BaseConverter {
 
