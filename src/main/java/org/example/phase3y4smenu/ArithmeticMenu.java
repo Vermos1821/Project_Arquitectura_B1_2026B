@@ -1,6 +1,7 @@
 package org.example.phase3y4smenu;
 
 import org.example.phase3y4.BinaryAddition;
+import org.example.phase3y4.BinarySubtraction;
 import org.example.phase3y4.TwosComplementEncoder;
 import org.example.util.Color;
 
@@ -57,6 +58,7 @@ public class ArithmeticMenu {
                         // Pendiente de implementar
                     }
                     case 3 -> binaryAddition(scanner);
+                    case 4 -> binarySubtraction(scanner);
                     case 0 -> System.out.println(Color.GREEN + "\n↩ Regresando al menú principal..." + Color.RESET);
                     default -> System.out.println(Color.RED + "❌ Opción inválida. Vuelva a intentarlo." + Color.RESET);
                 }
@@ -171,6 +173,56 @@ public class ArithmeticMenu {
         } catch (InputMismatchException inputMismatchException) {
             System.out.println(Color.RED + "❌ Error: ingrese números enteros válidos." + Color.RESET);
             scanner.nextLine();
+        }
+    }
+
+    /**
+     * Solicita los números y la cantidad de bits para realizar una resta binaria.
+     *
+     * @param scanner objeto Scanner para leer los datos ingresados.
+     */
+    private void binarySubtraction(Scanner scanner) {
+        try {
+            System.out.println(Color.CYAN + "\n=================================================" + Color.RESET);
+            System.out.println(Color.BOLD + Color.YELLOW + "                 RESTA BINARIA" + Color.RESET);
+            System.out.println(Color.CYAN + "=================================================" + Color.RESET);
+
+            System.out.print(Color.YELLOW + "➤ Ingrese el primer número: " + Color.RESET);
+            int firstNumber = scanner.nextInt();
+
+            System.out.print(Color.YELLOW + "➤ Ingrese el segundo número: " + Color.RESET);
+            int secondNumber = scanner.nextInt();
+
+            System.out.println(Color.CYAN + "\nSeleccione la cantidad de bits:" + Color.RESET);
+            System.out.println("  [" + Color.GREEN + " 1 " + Color.RESET + "] 8 bits");
+            System.out.println("  [" + Color.GREEN + " 2 " + Color.RESET + "] 16 bits");
+            System.out.println("  [" + Color.GREEN + " 3 " + Color.RESET + "] 32 bits");
+
+            System.out.print(Color.YELLOW + "➤ Ingrese una opción: " + Color.RESET);
+
+            int option = scanner.nextInt();
+            int bits;
+
+            switch (option) {
+                case 1 -> bits = 8;
+                case 2 -> bits = 16;
+                case 3 -> bits = 32;
+                default -> {
+                    System.out.println(Color.RED + "❌ Opción de bits inválida." + Color.RESET);
+                    return;
+                }
+            }
+
+            // Creamos el objeto que se encargará de realizar la resta.
+            BinarySubtraction binarySubtraction = new BinarySubtraction();
+
+            // Ejecutamos la operación con los números y bits seleccionados
+            binarySubtraction.subtractNumbers(firstNumber, secondNumber, bits);
+
+        } catch (InputMismatchException inputMismatchException) {
+            System.out.println(Color.RED + "❌ Error: ingrese números enteros válidos." + Color.RESET);
+            scanner.nextLine();
+
         }
     }
 }

@@ -12,7 +12,7 @@ public class Binary implements BaseConverter {
     private final int base = 2;
 
     /**
-     * Conviertimos un número decimal positivo a su representación en binario.
+     * Convertimos un número decimal positivo a su representación en binario.
      * Usa el método de divisiones sucesivas entre 2.
      *
      * @param numberDecimal El número decimal (base 10) a convertir.
@@ -37,9 +37,13 @@ public class Binary implements BaseConverter {
     }
 
     /**
+     * Convertimos una cadena de texto el cual representa un número binario a su valor decimal.
+     * Incluye validación de overflow para estar seguros qué el resultado
+     * no exceda el límite máximo que soporta por el tipo de dato {@code long}
      *
-     * @param numberInBase
-     * @return
+     * @param numberInBase El número binario representado como cadena de texto.
+     * @return El valor que equivale en sistema decimal (base 10) como {@code long}.
+     * @throws ArithmeticException Si el número convertido se excede del límite máximo de {@code Long.MAX_VALUE}.
      */
     @Override
     public long convertToDecimal(String numberInBase) {
