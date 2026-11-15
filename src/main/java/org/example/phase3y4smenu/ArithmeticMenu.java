@@ -203,6 +203,14 @@ public class ArithmeticMenu {
         }
     }
 
+    /**
+     * Ejecuta la decodificación a través de {@link TwosComplementDecoder} e imprime en consola
+     * la traza técnica del proceso inverso paso a paso (análisis del MSB, complemento a uno,
+     * suma de acarreo y magnitud decimal final).
+     *
+     * @param binaryStr Cadena binaria en Complemento a Dos a decodificar.
+     * @param bits Longitud de palabra en bits asociada a la cadena.
+     */
     private void executeDecodingAndTrace(String binaryStr, int bits){
         TwosComplementDecoder twosComplementDecoder = new TwosComplementDecoder();
 
