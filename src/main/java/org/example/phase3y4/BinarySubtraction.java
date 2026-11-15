@@ -1,17 +1,31 @@
 package org.example.phase3y4;
 
 /**
- * Realiza la resta de dos números enteros utilizando complemento a dos.
- * Permite elegir con representaciones de 8, 16 y 32 bits.
+ * Clase que se encarga de ejecutar la resta aritmética binaria de dos números enteros con signo
+ * a través de codificación en Complemento a Dos.
+ * <p>
+ * Implementa la sustracción reduciéndola a una suma algebraica con el opuesto aditivo del
+ * sustraendo ($A - B = A + (-B)$), donde $-B$ se obtiene aplicando el Complemento a Dos
+ * sobre el segundo operando. Permite estructuras de palabra fija de 8, 16 y 32 bits,
+ * asignando la codificación inicial a {@link TwosComplementEncoder} y agregando detección
+ * de desbordamiento aritmético.
+ * </p>
  */
 public class BinarySubtraction {
 
     /**
-     * Resta dos números enteros usando la cantidad de bits seleccionada.
+     * Valida el minuendo y el sustraendo, los codifica en Complemento a Dos dependiendo de la longitud
+     * de palabra especificada y ejecuta la resta binaria mediante la suma del minuendo con el
+     * complemento a dos del sustraendo.
+     * <p>
+     * Muestra en consola los operandos binarios, el complemento a dos del sustraendo, el
+     * resultado binario obtenido, su equivalente decimal con signo, la diferencia matemática
+     * exacta y el indicador de desbordamiento.
+     * </p>
      *
-     * @param firstNumber primer número (minuendo).
-     * @param secondNumber segundo número (sustraendo).
-     * @param bits cantidad de bits que se usará (8, 16 o 32).
+     * @param firstNumber Minuendo entero decimal con signo ($A$).
+     * @param secondNumber Sustraendo entero decimal con signo ($B$).
+     * @param bits Longitud de palabra en bits para la operación ({@code 8}, {@code 16} o {@code 32}).
      */
     public void subtractNumbers(int firstNumber, int secondNumber, int bits) {
         // Creamos el codificador para reutilizar sus métodos de validación y conversión.
@@ -69,10 +83,11 @@ public class BinarySubtraction {
     }
 
     /**
-     * Invierte los bits de una cadena binaria.
+     * Aplica el operador lógico NOT bit a bit (Complemento a Uno), invirtiendo cada
+     * dígito binario de la cadena de entrada ({@code '0'} por {@code '1'} y viceversa).
      *
-     * @param binary cadena binaria original.
-     * @return cadena con los bits invertidos.
+     * @param binary Cadena binaria original cuyos bits serán invertidos.
+     * @return Nueva cadena binaria con todos los bits complementados.
      */
     private String invertBits(String binary) {
         String inverted = "";
@@ -89,10 +104,11 @@ public class BinarySubtraction {
     }
 
     /**
-     * Suma uno a una cadena binaria usando el acarreo, de derecha a izquierda.
+     * Ejecuta el incremento binario en una unidad ({@code +1}) recorriendo la palabra desde
+     * el bit menos significativo (LSB) hasta el más significativo (MSB) con propagación de acarreo.
      *
-     * @param binary cadena binaria a la que se sumará uno.
-     * @return cadena binaria con el resultado.
+     * @param binary Cadena binaria en Complemento a Uno a la que se sumará {@code 1}.
+     * @return Cadena binaria resultante tras completar la propagación del acarreo.
      */
     private String addOne(String binary) {
         String result = "";
@@ -115,11 +131,39 @@ public class BinarySubtraction {
     }
 
     /**
-     * Suma dos cadenas binarias de igual longitud usando el acarreo.
+     * Determina si ocurrió un desbordamiento aritmético en la sustracción con signo.
+     * <p>
+     * En una resta $A - B$, el desbordamiento ocurre únicamente cuando el minuendo y el
+     * sustraendo tienen signos opuestos y el signo del resultado es diferente del signo del minuendo
+     * (restar un negativo a un positivo obteniendo un negativo, o restar un positivo a un
+     * negativo obteniendo un positivo).
+     * </p>
      *
-     * @param firstBinary primera cadena binaria.
-     * @param secondBinary segunda cadena binaria.
-     * @return resultado en binario con la misma cantidad de bits.
+     * @param firstBinary Representación binaria del minuendo ($A$).
+     * @param secondBinary Representación binaria original del sustraendo ($B$).
+     * @param binaryResult Representación binaria del resultado de la resta.
+     * @return {@code true} si se detecta desbordamiento; {@code false} en caso contrario.
+     */
+    private boolean hasOverflow(String firstBinary, String secondBinary, String binaryResult) {
+        char firstSign = firstBinary.charAt(0);
+        char secondSign = secondBinary.charAt(0);
+        char resultSign = binaryResult.charAt(0);
+
+        // En la resta hay overflow si los operandos tienen signos distintos
+        // y el signo del resultado es diferente al del primer operando
+        return firstSign != secondSign && firstSign != resultSign;
+    }
+
+    /**
+     * Ejecuta la suma binaria bit a bit de dos cadenas de igual longitud propagando el acarreo
+     * desde el bit menos significativo (LSB) hacia el más significativo (MSB).
+     * <p>
+     * En estructura de palabra fija, el acarreo saliente final se descarta de manera automática.
+     * </p>
+     *
+     * @param firstBinary Cadena binaria del primer operando (minuendo).
+     * @param secondBinary Cadena binaria del segundo operando (sustraendo complementado).
+     * @return Cadena binaria resultante con la misma longitud de palabra que los operandos.
      */
     private String addBinary(String firstBinary, String secondBinary) {
         int bitLength = firstBinary.length();
@@ -142,28 +186,17 @@ public class BinarySubtraction {
     }
 
     /**
-     * Determina si la resta produjo desbordamiento.
+     * Decodifica una cadena binaria codificada en Complemento a Dos hacia su valor
+     * decimal con signo.
+     * <p>
+     * Si el bit más significativo (MSB) es {@code '1'}, aplica el proceso inverso del
+     * Complemento a Dos a través de {@link #invertBits(String)} y {@link #addOne(String)}
+     * para recuperar la magnitud negativa. Si es {@code '0'}, realiza la conversión
+     * posicional directa.
+     * </p>
      *
-     * @param firstBinary representación del primer operando.
-     * @param secondBinary representación del segundo operando.
-     * @param binaryResult representación binaria del resultado.
-     * @return true si existe overflow; false en caso contrario.
-     */
-    private boolean hasOverflow(String firstBinary, String secondBinary, String binaryResult) {
-        char firstSign = firstBinary.charAt(0);
-        char secondSign = secondBinary.charAt(0);
-        char resultSign = binaryResult.charAt(0);
-
-        // En la resta hay overflow si los operandos tienen signos distintos
-        // y el signo del resultado es diferente al del primer operando
-        return firstSign != secondSign && firstSign != resultSign;
-    }
-
-    /**
-     * Convierte una representación en complemento a dos a decimal.
-     *
-     * @param binary cadena binaria que representa el resultado.
-     * @return valor decimal con signo.
+     * @param binary Cadena binaria en Complemento a Dos a decodificar.
+     * @return Valor decimal que equivale al tipo {@code long}.
      */
     private long toDecimal(String binary) {
         boolean negative = binary.charAt(0) == '1';

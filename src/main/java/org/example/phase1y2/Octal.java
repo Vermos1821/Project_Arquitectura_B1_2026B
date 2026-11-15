@@ -1,8 +1,13 @@
 package org.example.phase1y2;
 
 /**
- * Realiza conversiones entre el sistema decimal y el sistema octal.
- * También implementamos los métodos definidos en la interfaz Base Converter.
+ * Implementación de la interfaz {@link BaseConverter} especializada en la conversión
+ * bidireccional entre el sistema numérico decimal (base 10) y el sistema octal (base 8).
+ * <p>
+ * Utiliza el algoritmo de divisiones sucesivas para la codificación a octal y la
+ * evaluación polinómica posicional con control de desbordamiento (overflow) para la
+ * decodificación a decimal.
+ * </p>
  */
 public class Octal implements BaseConverter {
 
@@ -12,11 +17,11 @@ public class Octal implements BaseConverter {
     private final int base = 8;
 
     /**
-     * Convertimos un número decimal positivo a su representación en octal.
-     * Usa el método de divisiones sucesivas entre 8.
+     * Convierte un número decimal positivo a su representación en base 8
+     * aplicando el método de divisiones sucesivas entre {@code 8}.
      *
-     * @param numberDecimal El número decimal (base 10) a convertir.
-     * @return Una cadena de texto ({@code String}) que representa el número en sistema binario.
+     * @param numberDecimal Número decimal (base 10) a convertir.
+     * @return Cadena de texto ({@code String}) que representa el número en sistema octal.
      */
     @Override
     public String convertFromDecimal(long numberDecimal) {
@@ -37,13 +42,18 @@ public class Octal implements BaseConverter {
     }
 
     /**
-     * Convertimos una cadena de texto el cual representa un número octal a su valor decimal.
-     * Incluye validación de overflow para estar seguros qué el resultado
-     * no exceda el límite máximo que soporta por el tipo de dato {@code long}
+     * Decodifica una cadena octal (base 8) a su valor entero equivalente en base 10
+     * a través de expansión posicional de potencias de 8.
+     * <p>
+     * Agrega verificaciones preventivas de overflow aritmético antes de cada
+     * multiplicación y suma acumulada para asegurarnos de que el resultado no supere
+     * {@link Long#MAX_VALUE}.
+     * </p>
      *
-     * @param numberInBase El número octal representado como cadena de texto.
-     * @return El valor que equivale en sistema decimal (base 10) como {@code long}.
-     * @throws ArithmeticException Si el número convertido se excede del límite máximo de {@code Long.MAX_VALUE}.
+     * @param numberInBase Cadena binaria compuesta por dígitos desde {@code 0-7}.
+     * @return Valor decimal equivalente de tipo {@code long}.
+     * @throws ArithmeticException Si la magnitud del número octal supera la capacidad
+     *                             máxima representable por {@code Long.MAX_VALUE}.
      */
     @Override
     public long convertToDecimal(String numberInBase) {

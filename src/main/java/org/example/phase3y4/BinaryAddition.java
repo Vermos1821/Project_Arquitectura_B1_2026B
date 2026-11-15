@@ -1,20 +1,26 @@
 package org.example.phase3y4;
 
 /**
- * Realiza la suma de dos números enteros utilizando complemento a dos.
- * Permite elegir con representaciones de 8, 16 y 32 bits.
+ * Clase que se encarga de ejecutar la suma aritmética binaria de dos números enteros con signo
+ * utilizando codificación en Complemento a Dos.
+ * <p>
+ * Permite estructuras de palabra fija de 8, 16 y 32 bits, asignando la codificación
+ * inicial a {@link TwosComplementEncoder} e incluyendo detección formal de desbordamiento
+ * aritmético a través del análisis de los bits de signo (MSB).
+ * </p>
  */
 public class BinaryAddition {
 
     /**
-     * Suma dos números enteros usando la cantidad de bits que el usuario
-     * ha seleccionado.
+     * Valida los operandos de entrada, los codifica en Complemento a Dos dependiendo de la longitud
+     * de palabra especificada y ejecuta la suma binaria bit a bit, desplazando en consola
+     * los operandos binarios, el resultado codificado, su equivalente decimal con signo,
+     * la suma matemática exacta y el indicador de desbordamiento (overflow).
      *
-     * @param firstNumber primer número que se desea sumar.
-     * @param secondNumber segundo número que se desea sumar.
-     * @param bits cantidad de bits que se usará (8, 16 o 32).
+     * @param firstNumber Primer operando decimal con signo.
+     * @param secondNumber Segundo operando decimal con signo.
+     * @param bits Longitud de palabra en bits para la operación ({@code 8}, {@code 16} o {@code 32}).
      */
-
     public void addNumbers(int firstNumber, int secondNumber, int bits) {
         // Creamos el codificador para reutilizar sus métodos de validación y conversión.
         TwosComplementEncoder twosComplementEncoder = new TwosComplementEncoder();
@@ -68,11 +74,16 @@ public class BinaryAddition {
     }
 
     /**
-     * Suma dos cadenas binarias de igual longitud usando el acarreo.
+     * Ejecuta la suma binaria bit a bit de dos cadenas de igual longitud propagando el acarreo
+     * desde el bit menos significativo (LSB) hasta el más significativo (MSB).
+     * <p>
+     * En aritmética de longitud fija en Complemento a Dos, cualquier acarreo saliente tras
+     * procesar el MSB se descarta automáticamente.
+     * </p>
      *
-     * @param firstBinary primera cadena binaria.
-     * @param secondBinary segunda cadena binaria.
-     * @return resultado a binario con la misma cantidad de bits
+     * @param firstBinary Cadena binaria del primer operando.
+     * @param secondBinary Cadena binaria del segundo operando.
+     * @return Cadena binaria resultante con la misma longitud de palabra que los operandos.
      */
     private String addBinary(String firstBinary, String secondBinary) {
 
@@ -98,11 +109,17 @@ public class BinaryAddition {
     }
 
     /**
+     * Determina si ocurrió un desbordamiento aritmético en la suma con signo.
+     * <p>
+     * El desbordamiento se ocurre únicamente cuando ambos operandos comparten el mismo
+     * bit de signo (MSB) y el resultado que se obtiene presenta el bit de signo opuesto
+     * (suma de dos positivos que produce un negativo, o suma de dos negativos que produce un positivo).
+     * </p>
      *
-     * @param firstBinary representación del primer operando.
-     * @param secondBinary representación del segundo operando.
-     * @param binaryResult representación binaria del resultado.
-     * @return true si es que existe overflow; false si no es caso.
+     * @param firstBinary Representación binaria del primer operando.
+     * @param secondBinary Representación binaria del segundo operando.
+     * @param binaryResult Representación binaria resultante de la suma.
+     * @return {@code true} si se detecta desbordamiento; {@code false} en caso contrario.
      */
     private boolean hasOverflow(String firstBinary, String secondBinary, String binaryResult) {
         char firstSign = firstBinary.charAt(0);
@@ -114,10 +131,17 @@ public class BinaryAddition {
     }
 
     /**
-     *Convierte una representación en complemento a dos a decimal.
+     * Decodifica una cadena binaria codificada en Complemento a Dos hacia su valor
+     * decimal con signo.
+     * <p>
+     * Si el bit más significativo (MSB) es {@code '1'}, aplica el proceso inverso del
+     * Complemento a Dos (inversión de bits a través de {@link #invertBits(String)} y suma de
+     * {@code 1}) para recuperar la magnitud negativa. Si es {@code '0'}, realiza la
+     * evaluación polinómica directa.
+     * </p>
      *
-     * @param binary cadena binaria la cual representa el resultado.
-     * @return valor decimal con signo.
+     * @param binary Cadena binaria en Complemento a Dos a decodificar.
+     * @return Valor decimal equivalente de tipo {@code long}.
      */
     private long toDecimal(String binary) {
         boolean negative = binary.charAt(0) == '1';
@@ -147,10 +171,11 @@ public class BinaryAddition {
     }
 
     /**
-     * Invierte los bits de una cadena binaria.
+     * Aplica la operación lógica NOT bit a bit (Complemento a Uno), invirtiendo cada
+     * dígito binario de la cadena de entrada ({@code '0'} por {@code '1'} y viceversa).
      *
-     * @param binary cadena binaria original.
-     * @return cadena con los bits invertidos.
+     * @param binary Cadena binaria original cuyos bits serán invertidos.
+     * @return Nueva cadena binaria con los bits complementados.
      */
     private String invertBits(String binary) {
         StringBuilder inverted = new StringBuilder();
@@ -163,11 +188,11 @@ public class BinaryAddition {
     }
 
     /**
-     * Creamos una cadena binaria la cual representa el número uno
-     * con la longitud indicada.
+     * Genera una palabra binaria de longitud fija el cual representa la constante entera {@code 1}
+     * rellenada con ceros a la izquierda.
      *
-     * @param bitLength longitud de la cadena.
-     * @return cadena binaria con el valor uno.
+     * @param bitLength Longitud total en bits de la palabra binaria a construir.
+     * @return Cadena binaria compuesta por {@code bitLength - 1} ceros seguidos de un {@code '1'}.
      */
     private String createOne(int bitLength) {
         return "0".repeat(bitLength - 1) + "1";
