@@ -295,11 +295,6 @@ public class ArithmeticMenu {
             System.out.print(Color.YELLOW + "➤ Ingrese el segundo número: " + Color.RESET);
             int secondNumber = scanner.nextInt();
 
-            System.out.println(Color.CYAN + "\nSeleccione la cantidad de bits:" + Color.RESET);
-            System.out.println("  [" + Color.GREEN + " 1 " + Color.RESET + "] 8 bits");
-            System.out.println("  [" + Color.GREEN + " 2 " + Color.RESET + "] 16 bits");
-            System.out.println("  [" + Color.GREEN + " 3 " + Color.RESET + "] 32 bits");
-
             int bits = promptBitSize(scanner);
             if (bits == -1) {
                 return;
