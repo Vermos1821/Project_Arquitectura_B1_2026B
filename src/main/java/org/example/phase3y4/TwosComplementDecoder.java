@@ -3,24 +3,26 @@ package org.example.phase3y4;
 /**
  * Clase encargada de verificar y decodificar una representación binaria en Complemento a Dos
  * a su valor decimal original. Permite trabajar con cantidades de 8, 16 y 32 bits.
+ * Trabaja en conjunto simétrico con {@link TwosComplementEncoder} y se apoya en {@link BaseConverter}.
  */
 public class TwosComplementDecoder {
 
     /**
      * Comprueba si la cantidad de bits seleccionada es válida.
      *
-     * @param bits cantidad de bits que se desea utilizar.
-     * @return true si la cantidad es 8, 16 o 32; caso contrario, false.
+     * @param bits cantidad de bits que se desea utilizar (debe ser {@code 8}, {@code 16} o {@code 32}).
+     * @return {@code true} si la cantidad es 8, 16 o 32; caso contrario, {@code false}.
      */
     public boolean isValidBitSize(int bits) {
         return bits == 8 || bits == 16 || bits == 32;
     }
 
     /**
-     * Invierte los bits de una cadena binaria. Cada cero se convierte en uno y cada uno en cero.
+     * Invierte los bits de una cadena binaria. Cada {@code '0'} se convierte en uno y cada {@code '1'} en cero.
      *
      * @param binary cadena binaria cuyos bits se desean invertir.
      * @return nueva cadena binaria con los bits invertidos.
+     * @throws IllegalArgumentException si encuentra un carácter diferente de {@code '0'} o {@code '1'}.
      */
     private String invertBits(String binary) {
         StringBuilder inverted = new StringBuilder();
@@ -64,8 +66,10 @@ public class TwosComplementDecoder {
      * Decodifica una cadena binaria en Complemento a Dos a su valor decimal original.
      *
      * @param binaryStr cadena binaria que se desea decodificar.
-     * @param bits cantidad de bits con la que fue representada (8, 16 o 32).
+     * @param bits cantidad de bits con la que fue representada ({@code 8}, {@code 16} o {@code 32}).
      * @return el número entero decimal recuperado, o lanza un error si los datos no son válidos.
+     * @throws IllegalArgumentException si el tamaño de bits no es válido o la longitud de la cadena no coincide.
+     * @see #isValidBitSize(int)
      */
     public long decode(String binaryStr, int bits) {
         if (!isValidBitSize(bits)) {
