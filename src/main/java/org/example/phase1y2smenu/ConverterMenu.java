@@ -10,18 +10,26 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
- * Gestiona los menús de conversión entre sistemas numéricos.
- * Permite convertir números decimales a otras bases y números
- * representados en otras bases al sistema decimal.
+ * Controlador de interfaz de consola que se encarga de la gestión de los submenús de conversión
+ * bidireccional entre el sistema decimal (base 10) y sistemas de numeración posicional
+ * (binario, hexadecimal y octal).
+ * <p>
+ * Implementa polimorfismo mediante la interfaz {@link BaseConverter} y aplica bucles de
+ * validación persistentes para evitar interrupciones ante entradas inválidas.
+ * </p>
  */
 public class ConverterMenu {
 
     /**
-     * Muestra el menú para convertir un número decimal
-     * a binario, hexadecimal u octal.
+     * Muestra el flujo interactivo para convertir un número entero decimal positivo
+     * hacia una base de destino que seleccionó el usuario (Binario, Hexadecimal u Octal).
+     * <p>
+     * Primero valida que el operando decimal sea mayor o igual a cero. Posteriormente,
+     * mantiene al usuario dentro del submenú de selección de base hasta que elija una opción
+     * válida ({@code 1-3}) o decida cancelar ({@code 0}).
+     * </p>
      *
-     * @param scanner objeto Scanner utilizado para recibir
-     * los datos ingresados por el usuario.
+     * @param scanner Instancia de {@link Scanner} usada para capturar las entradas por consola.
      */
     public void decimalToOtherBases(Scanner scanner) {
         long numberDecimal = 0;
@@ -46,106 +54,115 @@ public class ConverterMenu {
             }
         }
 
-        System.out.println(Color.CYAN + "\n=================================================" + Color.RESET);
-        System.out.println(Color.BOLD + Color.YELLOW + "       ✨ DECIMAL A OTRAS BASES ✨       " + Color.RESET);
-        System.out.println(Color.CYAN + "=================================================" + Color.RESET);
-        System.out.println("  [" + Color.GREEN + " 1 " + Color.RESET + "] ➔ Binario");
-        System.out.println("  [" + Color.GREEN + " 2 " + Color.RESET + "] ➔ Hexadecimal");
-        System.out.println("  [" + Color.GREEN + " 3 " + Color.RESET + "] ➔ Octal");
-        System.out.println(Color.CYAN + "-------------------------------------------------" + Color.RESET);
-        System.out.println("  [" + Color.RED + " 0 " + Color.RESET + "] ➔ Cancelar y volver");
-        System.out.println(Color.CYAN + "=================================================" + Color.RESET);
-        System.out.print(Color.YELLOW + " ➤ Seleccione la base destino: " + Color.RESET);
-
         int option = 0;
-
-        try {
-            option = scanner.nextInt();
-
-        } catch (InputMismatchException inputMismatchException) {
-            System.out.println(Color.RED + " ❌ Error: opción inválida." + Color.RESET);
-            scanner.nextLine();
-            return;
-        }
-
         BaseConverter baseConverter = null;
 
-        switch (option) {
-            case 1 -> baseConverter = new Binary();
-            case 2 -> baseConverter = new Hexadecimal();
-            case 3 -> baseConverter = new Octal();
-            case 0 -> {
-                System.out.println(Color.GREEN + "\n ↩ Saliendo del conversor..." + Color.RESET);
-                return;
+        do {
+            System.out.println(Color.CYAN + "\n=================================================" + Color.RESET);
+            System.out.println(Color.BOLD + Color.YELLOW + "       ✨ DECIMAL A OTRAS BASES ✨       " + Color.RESET);
+            System.out.println(Color.CYAN + "=================================================" + Color.RESET);
+            System.out.println("  [" + Color.GREEN + " 1 " + Color.RESET + "] ➔ Binario");
+            System.out.println("  [" + Color.GREEN + " 2 " + Color.RESET + "] ➔ Hexadecimal");
+            System.out.println("  [" + Color.GREEN + " 3 " + Color.RESET + "] ➔ Octal");
+            System.out.println(Color.CYAN + "-------------------------------------------------" + Color.RESET);
+            System.out.println("  [" + Color.RED + " 0 " + Color.RESET + "] ➔ Cancelar y volver");
+            System.out.println(Color.CYAN + "=================================================" + Color.RESET);
+            System.out.print(Color.YELLOW + " ➤ Seleccione la base destino: " + Color.RESET);
+
+            try {
+                option = scanner.nextInt();
+
+                switch (option) {
+                    case 1 -> baseConverter = new Binary();
+                    case 2 -> baseConverter = new Hexadecimal();
+                    case 3 -> baseConverter = new Octal();
+                    case 0 -> {
+                        System.out.println(Color.GREEN + "\n ↩ Saliendo del conversor..." + Color.RESET);
+                        return;
+                    }
+                    default -> {
+                        System.out.println(Color.RED + " ❌ Opción de base no válida." + Color.RESET);
+                        return;
+                    }
+                }
+
+            } catch (InputMismatchException inputMismatchException) {
+                System.out.println(Color.RED + " ❌ Error: debe ingresar un número entero válido." + Color.RESET);
+                scanner.nextLine();
+                option = -1;
             }
-            default -> {
-                System.out.println(Color.RED + " ❌ Opción de base no válida." + Color.RESET);
-                return;
-            }
-        }
+
+        } while (baseConverter == null);
 
         System.out.println(Color.CYAN + "\n ➔ Resultado de la conversión: " + Color.BOLD + Color.GREEN +
                             baseConverter.convertFromDecimal(numberDecimal) + Color.RESET);
     }
 
     /**
-     * Muestra el menú para convertir números binarios,
-     * hexadecimales u octales al sistema decimal.
+     * Muestra el submenú para decodificar una cadena numérica expresada en binario,
+     * hexadecimal u octal hacia su valor equivalente en el sistema decimal (base 10).
+     * <p>
+     * Mantiene el submenú activo ante selecciones erróneas o caracteres no numéricos.
+     * Una vez elegida la base de origen, valida el formato de la cadena ingresada a través de
+     * expresiones regulares específicas y controla posibles desbordamientos aritméticos
+     * ({@link ArithmeticException}) al superar {@link Long#MAX_VALUE}.
+     * </p>
      *
-     * @param scanner objeto Scanner utilizado para recibir
-     * los datos ingresados por el usuario.
+     * @param scanner Instancia de {@link Scanner} usada para capturar las entradas por consola.
      */
     public void otherBasesToDecimal(Scanner scanner) {
-        String numberInBase = "0";
-        boolean flag = false;
-
-        System.out.println(Color.CYAN + "\n=================================================" + Color.RESET);
-        System.out.println(Color.BOLD + Color.YELLOW + "       ✨ OTRAS BASES A DECIMAL ✨       " + Color.RESET);
-        System.out.println(Color.CYAN + "=================================================" + Color.RESET);
-        System.out.println("  [" + Color.GREEN + " 1 " + Color.RESET + "] ➔ Desde Binario");
-        System.out.println("  [" + Color.GREEN + " 2 " + Color.RESET + "] ➔ Desde Hexadecimal");
-        System.out.println("  [" + Color.GREEN + " 3 " + Color.RESET + "] ➔ Desde Octal");
-        System.out.println(Color.CYAN + "-------------------------------------------------" + Color.RESET);
-        System.out.println("  [" + Color.RED + " 0 " + Color.RESET + "] ➔ Cancelar y volver");
-        System.out.println(Color.CYAN + "=================================================" + Color.RESET);
-        System.out.print(Color.YELLOW + " ➤ Seleccione la base de origen: " + Color.RESET);
-
         int option = 0;
-
-        try {
-            option = scanner.nextInt();
-
-        } catch (InputMismatchException inputMismatchException) {
-            System.out.println(Color.RED + " ❌ Error: opción inválida." + Color.RESET);
-            scanner.nextLine();
-            return;
-        }
-
         BaseConverter baseConverter = null;
         String regex = "";
 
-        switch (option) {
-            case 1 -> {
-                baseConverter = new Binary();
-                regex = "[0-1]+";
+        do {
+            System.out.println(Color.CYAN + "\n=================================================" + Color.RESET);
+            System.out.println(Color.BOLD + Color.YELLOW + "       ✨ OTRAS BASES A DECIMAL ✨       " + Color.RESET);
+            System.out.println(Color.CYAN + "=================================================" + Color.RESET);
+            System.out.println("  [" + Color.GREEN + " 1 " + Color.RESET + "] ➔ Desde Binario");
+            System.out.println("  [" + Color.GREEN + " 2 " + Color.RESET + "] ➔ Desde Hexadecimal");
+            System.out.println("  [" + Color.GREEN + " 3 " + Color.RESET + "] ➔ Desde Octal");
+            System.out.println(Color.CYAN + "-------------------------------------------------" + Color.RESET);
+            System.out.println("  [" + Color.RED + " 0 " + Color.RESET + "] ➔ Cancelar y volver");
+            System.out.println(Color.CYAN + "=================================================" + Color.RESET);
+            System.out.print(Color.YELLOW + " ➤ Seleccione la base de origen: " + Color.RESET);
+
+            try {
+                option = scanner.nextInt();
+
+                switch (option) {
+                    case 1 -> {
+                        baseConverter = new Binary();
+                        regex = "[0-1]+";
+                    }
+                    case 2 -> {
+                        baseConverter = new Hexadecimal();
+                        regex = "[0-9A-Fa-f]+";
+                    }
+                    case 3 -> {
+                        baseConverter = new Octal();
+                        regex = "[0-7]+";
+                    }
+                    case 0 -> {
+                        System.out.println(Color.GREEN + "\n ↩ Saliendo del conversor..." + Color.RESET);
+                        return;
+                    }
+                    default -> {
+                        System.out.println(Color.RED + " ❌ Opción de base no válida." + Color.RESET);
+                        return;
+                    }
+                }
+
+            } catch (InputMismatchException inputMismatchException) {
+                System.out.println(Color.RED + " ❌ Error: debe ingresar un número entero válido." + Color.RESET);
+                scanner.nextLine();
+                option = -1;
             }
-            case 2 -> {
-                baseConverter = new Hexadecimal();
-                regex = "[0-9A-Fa-f]+";
-            }
-            case 3 -> {
-                baseConverter = new Octal();
-                regex = "[0-7]+";
-            }
-            case 0 -> {
-                System.out.println(Color.GREEN + "\n ↩ Saliendo del conversor..." + Color.RESET);
-                return;
-            }
-            default -> {
-                System.out.println(Color.RED + " ❌ Opción de base no válida." + Color.RESET);
-                return;
-            }
-        }
+
+        }while (baseConverter == null);
+
+        String numberInBase = "0";
+        boolean flag = false;
 
         while (!flag) {
             System.out.print(Color.YELLOW + "\n ➤ Ingrese el número para convertir a decimal: " + Color.RESET);
@@ -164,7 +181,9 @@ public class ConverterMenu {
             System.out.println(Color.CYAN + "\n ➔ El número representado en decimal es: " + Color.BOLD + Color.GREEN +
                     baseConverter.convertToDecimal(numberInBase) + Color.RESET);
         } catch (ArithmeticException arithmeticException) {
-            System.out.println(Color.RED + " ❌ Error: El nùmero excede el límite permitido para long." + Color.RESET);
+            System.out.println(Color.RED + " ❌ Error: El número excede el límite permitido para long." + Color.RESET);
         }
+
     }
+
 }

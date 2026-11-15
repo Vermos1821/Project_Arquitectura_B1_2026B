@@ -1,25 +1,39 @@
 package org.example.phase3y4;
 
 /**
- * Clase encargada de convertir números decimales enteros a su representación binaria usando complemento a dos. Permite
- * trabajar con cantidades de 8, 16 y 32 bits.
+ * Clase encargada de convertir números decimales enteros con signos a su representación
+ * binaria en formato de Complemento a Dos.
+ * <p>
+ * Permite longitudes de palabra estándar de 8, 16 y 32 bits, el cual valida de manera previa
+ * que el valor decimal se encuentre dentro del rango representable $[-2^{n-1}, 2^{n-1} - 1]$
+ * que corresponde a la estructura seleccionada.
+ * </p>
  */
 public class TwosComplementEncoder {
     /**
-     * Comprueba si la cantidad de bits seleccionada es válida.
+     * Comprueba si la longitud de palabra en bits especificada es permitida por el codificador.
      *
-     * @param bits cantidad de bits que se desea utilizar.
-     * @return true si la cantidad es 8, 16 o 32; caso contrario, false.
+     * @param bits Cantidad de bits que se desea utilizar.
+     * @return {@code true} si la longitud es {@code 8}, {@code 16} o {@code 32};
+     *         {@code false} en caso contrario.
      */
     public boolean isValidBitSize(int bits) {
         return bits == 8 || bits == 16 || bits == 32;
     }
 
-    /** Comprueba si un número decimal se encuentra dentro del rango permitido para la cantidad de bits seleccionada.
+    /**
+     * Comprueba si un número decimal está ubicado dentro del dominio representable
+     * para una longitud de palabra específica en Complemento a Dos:
+     * <ul>
+     *     <li><b>8 bits:</b> $[-128, 127]$</li>
+     *     <li><b>16 bits:</b> $[-32768, 32767]$</li>
+     *     <li><b>32 bits:</b> $[-2147483648, 2147483647]$</li>
+     * </ul>
      *
-     * @param number número decimal que se desea representar.
-     * @param bits cantidad de bits que se utilizará.
-     * @return true si el número está dentro del rango permitido; caso contrario, false.
+     * @param number Valor entero decimal con signo a evaluar.
+     * @param bits Longitud de palabra en bits ({@code 8}, {@code 16} o {@code 32}).
+     * @return {@code true} si el número cabe dentro del rango permitido para dicha estructura;
+     *         {@code false} si provoca desbordamiento (overflow) o si los bits son inválidos.
      */
     public boolean isRepresentable(long number, int bits) {
         switch (bits) {
@@ -38,12 +52,14 @@ public class TwosComplementEncoder {
         }
     }
 
-    /** Convierte un número decimal positivo a su representación binaria. Completa la cadena con ceros a la izquierda
-     * hasta alcanzar la cantidad de bits indicada.
+    /**
+     * Transforma un decimal no negativo a su representación binaria pura a través
+     * divisiones sucesivas entre 2, aplicando relleno de ceros a la izquierda hasta completar
+     * la longitud de palabra indicada.
      *
-     * @param number número decimal positivo que se desea convertir.
-     * @param bits cantidad de bits que debe tener el resultado.
-     * @return cadena con la representación binaria del número.
+     * @param number Número entero decimal mayor o igual a cero.
+     * @param bits Longitud fija en bits que debe tener la cadena resultante.
+     * @return Cadena binaria de longitud {@code bits} correspondiente a la magnitud del número.
      */
     private String decimalToBinary(long number, int bits) {
         String binary = "";
@@ -66,10 +82,11 @@ public class TwosComplementEncoder {
     }
 
     /**
-     * Invierte los bits de una cadena binaria. Cada cero se convierte en uno y cada uno en cero.
+     * Invierte los bits de una cadena binaria.
+     * Cada cero se convierte en uno y cada uno en cero.
      *
-     * @param binary cadena binaria cuyos bits se desean invertir.
-     * @return nueva cadena binaria con los bits invertidos.
+     * @param binary Cadena binaria cuyos bits se desean invertir.
+     * @return Nueva cadena binaria con los bits invertidos.
      */
     private String invertBits(String binary){
         String inverted = "";
@@ -85,10 +102,11 @@ public class TwosComplementEncoder {
     }
 
     /**
-     * Suma uno a una cadena binaria utilizando el acarreo. Recorre los bits desde la derecha hacia la izquierda.
+     * Suma uno a una cadena binaria utilizando el acarreo.
+     * Recorre los bits desde la derecha hacia la izquierda.
      *
-     * @param binary cadena binaria a la que se sumará uno.
-     * @return cadena binaria con el resultado de la suma.
+     * @param binary CXadena binaria a la que se sumará uno.
+     * @return Cadena binaria con el resultado de la suma.
      */
     private String addOne(String binary) {
         String result = "";
@@ -108,14 +126,17 @@ public class TwosComplementEncoder {
     }
 
     /**
-     * Convierte un número decimal a su representación en complemento a dos. Primero se verifica que la cantidad de bits
-     * sea válida y que el número se encuentre dentro del rango permitido. Para números negativos, se obtiene su valor
-     * absoluto, se invierte los bits y se suma uno.
+     * Convierte un número decimal a su representación binaria en Complemento a Dos.
+     * <p>
+     * Para valores positivos o cero, retorna de manera directa la magnitud binaria con extensión de ceros.
+     * Para valores negativos, obtiene la magnitud absoluta en binario, aplica el Complemento a Uno
+     * a través de {@link #invertBits(String)} y suma una unidad con {@link #addOne(String)}.
+     * </p>
      *
-     * @param number número decimal que se desea convertir.
-     * @param bits cantidad de bits para representar el número (8, 16 o 32).
-     * @return cadena binaria que representa el número en complemento a dos, o un mensaje de error si los datos no son
-     * válidos.
+     * @param number Número decimal con signo que se desea convertir.
+     * @param bits Longitud de palabra deseada ({@code 8}, {@code 16} o {@code 32} bits).
+     * @return Cadena binaria que representa el número en Complemento a Dos, o un mensaje descriptivo con prefijo
+     *         {@code "ERROR:"} si la estructura de bits o el rango numérico no son válidos.
      */
     public String encode(long number, int bits) {
         if (!isValidBitSize(bits)) {
