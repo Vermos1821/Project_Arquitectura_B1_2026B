@@ -1,7 +1,7 @@
 package org.example.phase3y4;
 
 /**
- * Clase encargada de verificar y decodificar una representación binaria en Complemento a Dos
+ * Clase que se encarga de verificar y decodificar una representación binaria en Complemento a Dos
  * a su valor decimal original. Permite trabajar con cantidades de 8, 16 y 32 bits.
  */
 public class TwosComplementDecoder {

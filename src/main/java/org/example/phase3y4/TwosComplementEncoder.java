@@ -1,7 +1,7 @@
 package org.example.phase3y4;
 
 /**
- * Clase encargada de convertir números decimales enteros con signos a su representación
+ * Clase que se encarga de convertir números decimales enteros con signos a su representación
  * binaria en formato de Complemento a Dos.
  * <p>
  * Permite longitudes de palabra estándar de 8, 16 y 32 bits, el cual valida de manera previa
