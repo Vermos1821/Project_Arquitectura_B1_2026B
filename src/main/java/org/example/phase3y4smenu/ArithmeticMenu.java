@@ -115,7 +115,8 @@ public class ArithmeticMenu {
             System.out.println("Cantidad de bits: " + Color.GREEN + bits + Color.RESET);
 
             if (result.startsWith("ERROR:")) {
-                System.out.println(Color.RED + result + Color.RESET);
+                System.out.println(Color.BOLD + Color.RED + "❌ " + result.replace("ERROR: ", "") +
+                                    Color.RESET);
             } else {
                 this.lastEncodedBinary = result;
                 this.lastEncodedBits = bits;
@@ -246,7 +247,10 @@ public class ArithmeticMenu {
             System.out.println(Color.CYAN + "=================================================" + Color.RESET);
 
         } catch (IllegalArgumentException illegalArgumentException){
-            System.out.println(Color.RED + "\n❌ " + illegalArgumentException.getMessage() + Color.RESET);
+            System.out.println(Color.RED + "\n-------------------------------------------------" + Color.RESET);
+            System.out.println(Color.BOLD + Color.RED + "❌ ERROR DE DECODIFICACIÓN:" + Color.RESET);
+            System.out.println(Color.RED + "   " + illegalArgumentException.getMessage() + Color.RESET);
+            System.out.println(Color.RED + "-------------------------------------------------" + Color.RESET);
         }
     }
 

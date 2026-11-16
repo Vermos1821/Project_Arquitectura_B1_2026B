@@ -1,5 +1,7 @@
 package org.example.phase3y4;
 
+import org.example.util.Color;
+
 /**
  * Clase que se encarga de ejecutar la suma aritmética binaria de dos números enteros con signo
  * utilizando codificación en Complemento a Dos.
@@ -27,14 +29,15 @@ public class BinaryAddition {
 
         // Comprobamos que la cantidad de bits sea válida
         if (!twosComplementEncoder.isValidBitSize(bits)) {
-            System.out.println("ERROR: la cantidad de bits debe ser de 8, 16 o 32");
+            System.out.println(Color.RED + "❌ ERROR: la cantidad de bits debe ser de 8, 16 o 32." + Color.RESET);
             return;
         }
 
         // Verificamos que ambos números puedan representarse con los bits que se seleccionó
         if(!twosComplementEncoder.isRepresentable(firstNumber, bits) ||
                 !twosComplementEncoder.isRepresentable(secondNumber, bits)) {
-            System.out.println("ERROR: uno o ambas entradas está fuera del rango permitido.");
+            System.out.println(Color.RED + "❌ ERROR: una o ambas entradas están fuera del rango permitido."
+                                + Color.RESET);
             return;
         }
 
@@ -54,22 +57,28 @@ public class BinaryAddition {
         // Calculamos la suma matemática sin la necesidad de la cantidad de bits
         long mathematicalSum = (long) firstNumber + secondNumber;
 
-        //se muestran los resultados de la operacion
-        System.out.println("\n SUMA BINARIA ");
-        System.out.println("Número de bits: " + bits);
+        // Se muestran los resultados de la operacion
+        System.out.println(Color.CYAN + "\n=================================================" + Color.RESET);
+        System.out.println(Color.BOLD + Color.YELLOW + "           RESULTADO DE SUMA BINARIA" + Color.RESET);
+        System.out.println(Color.CYAN + "=================================================" + Color.RESET);
 
-        System.out.println("Primer número: " + firstNumber);
-        System.out.println("Segundo número: " + secondNumber);
+        System.out.println("Números de bits: " + Color.GREEN + bits + " bits" + Color.RESET);
+        System.out.println("Primer número:         " + Color.GREEN + firstNumber + Color.RESET);
+        System.out.println("Segundo número:        " + Color.GREEN + secondNumber + Color.RESET);
 
-        System.out.println("\nPrimer operando:  " + firstBinary);
-        System.out.println("Segundo operando: " + secondBinary);
+        System.out.println(Color.CYAN + "-------------------------------------------------" + Color.RESET);
+        System.out.println("  Primer operando:     " + Color.YELLOW + firstBinary + Color.RESET);
+        System.out.println("+ Segundo operando:    " + Color.YELLOW + secondBinary + Color.RESET);
+        System.out.println(Color.CYAN + "-------------------------------------------------" + Color.RESET);
 
-        System.out.println("-------------------------------------");
-
-        System.out.println("Resultado binario: " + binaryResult);
-        System.out.println("Resultado decimal (" + bits + "-bit con signo): " + decimalResult);
-        System.out.println("Suma matemática: " + mathematicalSum);
-        System.out.println("Overflow: " + (overflow ? "YES" : "NO"));
+        System.out.println("Resultado binario:     " + Color.BOLD + Color.GREEN + binaryResult + Color.RESET);
+        System.out.println("Resultado decimal (" + bits + "-bit con signo): " + Color.BOLD + Color.GREEN
+                                                + decimalResult + Color.RESET);
+        System.out.println("Suma matemática:       " + Color.CYAN + mathematicalSum + Color.RESET);
+        System.out.println("Overflow:              " + (overflow ? Color.BOLD + Color.RED +
+                            "YES (Desbordamiento detectado)" + Color.RESET : Color.BOLD +
+                            Color.GREEN + "NO" + Color.RESET));
+        System.out.println(Color.CYAN + "=================================================" + Color.RESET);
 
     }
 

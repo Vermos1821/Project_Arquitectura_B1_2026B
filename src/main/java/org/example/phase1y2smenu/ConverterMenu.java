@@ -82,7 +82,6 @@ public class ConverterMenu {
                     }
                     default -> {
                         System.out.println(Color.RED + " ❌ Opción de base no válida." + Color.RESET);
-                        return;
                     }
                 }
 
@@ -149,7 +148,6 @@ public class ConverterMenu {
                     }
                     default -> {
                         System.out.println(Color.RED + " ❌ Opción de base no válida." + Color.RESET);
-                        return;
                     }
                 }
 

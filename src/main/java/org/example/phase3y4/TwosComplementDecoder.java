@@ -28,7 +28,8 @@ public class TwosComplementDecoder {
             char bit = binary.charAt(i);
 
             if (bit != '0' && bit != '1') {
-                throw new IllegalArgumentException("ERROR: carácter binario inválido detectado ('" + bit + "').");
+                throw new IllegalArgumentException("Carácter inválido '" + bit + "' en la posición " + (i + 1)
+                                                    + ". Solo se permiten '0' y '1'.");
             }
 
         }
@@ -95,14 +96,14 @@ public class TwosComplementDecoder {
      */
     public long decode(String binaryStr, int bits) {
         if (!isValidBitSize(bits)) {
-            throw new IllegalArgumentException("ERROR: la cantidad de bits debe ser 8, 16 o 32.");
+            throw new IllegalArgumentException("La cantidad de bits debe ser 8, 16 o 32.");
 
         }
 
         if (binaryStr == null || binaryStr.length() != bits) {
-            throw new IllegalArgumentException("ERROR: la cadena binaria no coincide (" +
-                                                (binaryStr == null ? 0 : binaryStr.length()) + ") no coincide con los " +
-                                                bits + " bits especificados.");
+            throw new IllegalArgumentException("Longitud inválida: se ingresaron " +
+                                                (binaryStr == null ? 0 : binaryStr.length()) + " bits, pero se esperaban" +
+                                                " exactamente " + bits + " bits.");
 
         }
 

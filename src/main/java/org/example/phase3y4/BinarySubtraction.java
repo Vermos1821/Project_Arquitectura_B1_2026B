@@ -1,5 +1,7 @@
 package org.example.phase3y4;
 
+import org.example.util.Color;
+
 /**
  * Clase que se encarga de ejecutar la resta aritmética binaria de dos números enteros con signo
  * a través de codificación en Complemento a Dos.
@@ -33,14 +35,15 @@ public class BinarySubtraction {
 
         // Comprobamos que la cantidad de bits sea válida
         if (!twosComplementEncoder.isValidBitSize(bits)) {
-            System.out.println("ERROR: la cantidad de bits debe ser de 8, 16 o 32");
+            System.out.println(Color.RED + "❌ ERROR: la cantidad de bits debe ser de 8, 16 o 32." + Color.RESET);
             return;
         }
 
         // Verificamos que ambos números puedan representarse con los bits que se seleccionó
         if (!twosComplementEncoder.isRepresentable(firstNumber, bits) ||
                 !twosComplementEncoder.isRepresentable(secondNumber, bits)) {
-            System.out.println("ERROR: uno o ambas entradas está fuera del rango permitido.");
+            System.out.println(Color.RED + "❌ ERROR: una o ambas entradas están fuera del rango permitido." +
+                                Color.RESET);
             return;
         }
 
@@ -64,22 +67,28 @@ public class BinarySubtraction {
         long mathematicalDifference = (long) firstNumber - secondNumber;
 
         // Se muestran los resultados de la operación
-        System.out.println("\n RESTA BINARIA ");
-        System.out.println("Número de bits: " + bits);
+        System.out.println(Color.CYAN + "\n=================================================" + Color.RESET);
+        System.out.println(Color.BOLD + Color.YELLOW + "          RESULTADO DE RESTA BINARIA" + Color.RESET);
+        System.out.println(Color.CYAN + "=================================================" + Color.RESET);
 
-        System.out.println("Primer número: " + firstNumber);
-        System.out.println("Segundo número: " + secondNumber);
+        System.out.println("Número de bits: " + Color.GREEN + bits + " bits" + Color.RESET);
+        System.out.println("Primer número (A):     " + Color.GREEN + firstNumber + Color.RESET);
+        System.out.println("Segundo número (B):    " + Color.GREEN + secondNumber + Color.RESET);
 
-        System.out.println("\nPrimer operando:  " + firstBinary);
-        System.out.println("Segundo operando: " + secondBinary);
-        System.out.println("Complemento a dos del segundo operando: " + secondComplement);
+        System.out.println(Color.CYAN + "-------------------------------------------------" + Color.RESET);
+        System.out.println("  Minuendo (A):        " + Color.YELLOW + firstBinary + Color.RESET);
+        System.out.println("  Sustraendo (B):      " + Color.YELLOW + secondBinary + Color.RESET);
+        System.out.println("+ Comp. a 2 (-B):      " + Color.CYAN + secondComplement + Color.RESET);
+        System.out.println(Color.CYAN + "-------------------------------------------------" + Color.RESET);
 
-        System.out.println("-------------------------------------");
-
-        System.out.println("Resultado binario: " + binaryResult);
-        System.out.println("Resultado decimal (" + bits + "-bit con signo): " + decimalResult);
-        System.out.println("Resta matemática: " + mathematicalDifference);
-        System.out.println("Overflow: " + (overflow ? "YES" : "NO"));
+        System.out.println("Resultado binario:     " + Color.BOLD + Color.GREEN + binaryResult + Color.RESET);
+        System.out.println("Resultado decimal (" + bits + "-bit con signo): " + Color.BOLD + Color.GREEN +
+                            decimalResult + Color.RESET);
+        System.out.println("Resta matemática:      " + Color.CYAN + mathematicalDifference + Color.RESET);
+        System.out.println("Overflow:              " + (overflow ? Color.BOLD + Color.RED +
+                            "YES (Desbordamiento detectado)" + Color.RESET : Color.BOLD + Color.GREEN + "NO" +
+                            Color.RESET));
+        System.out.println(Color.CYAN + "=================================================" + Color.RESET);
     }
 
     /**

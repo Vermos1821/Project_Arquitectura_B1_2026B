@@ -142,8 +142,13 @@ public class TwosComplementEncoder {
         if (!isValidBitSize(bits)) {
             return "ERROR: la cantidad de bits debe ser 8, 16 o 32.";
         }
+
         if (!isRepresentable(number, bits)) {
-            return "ERROR: el numero esta fuera del rango permitido.";
+            long min = -(1L << (bits - 1));
+            long max = (1L << (bits - 1)) - 1;
+            return "ERROR: El número " + number + " está fuera del rango para " + bits + " bits [" + min +
+                    ", " + max + "].";
+
         }
 
         if (number >= 0) {
