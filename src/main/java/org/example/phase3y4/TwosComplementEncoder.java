@@ -105,7 +105,7 @@ public class TwosComplementEncoder {
      * Suma uno a una cadena binaria utilizando el acarreo.
      * Recorre los bits desde la derecha hacia la izquierda.
      *
-     * @param binary CXadena binaria a la que se sumará uno.
+     * @param binary Cadena binaria a la que se sumará uno.
      * @return Cadena binaria con el resultado de la suma.
      */
     private String addOne(String binary) {
